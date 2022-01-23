@@ -5,6 +5,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>SpotifyGO</Text>
+      <Text>RiTwwIcK</Text>
       <StatusBar style="auto" />
     </View>
   );
