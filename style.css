@@ -1,0 +1,47 @@
+
+/* Bottom App Bar */
+.bottomBar {
+	background: rgb(68, 68, 68);
+	margin: 0;
+	padding: 3% 0;
+	position: absolute;
+    bottom: 0px;
+	width: 100%;
+    height: 6%;
+    text-align: center;
+}
+
+/* Bottom App Bar - List */
+.buttonList {
+	display: inline-block;
+	text-align: center; 
+    width: 20%;
+    height: 100%;
+}
+
+/* Bottom App Bar - Button */
+.barButton {
+    position: relative;
+    vertical-align: middle;
+  	font-weight: bold;
+    width: 90%;
+    height: 120%;
+    bottom: 10%;
+}
+
+/* Search Bar */
+#searchBar {
+	padding: 2%;
+	margin-top: 5%;
+    margin-left: 2%;
+}
+
+/* Relocation Butotn */
+.relocation {
+    position: absolute;
+    padding: 2%;
+	margin-top: 5%;
+    margin-right: 2%;
+    height: 8%;
+    right: 0;
+}

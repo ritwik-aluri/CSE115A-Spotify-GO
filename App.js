@@ -1,22 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "./style.css"
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>SpotifyGO</Text>
-      <Text>RiTwwIcK</Text>
-      <Text>Amogus</Text>
-      <StatusBar style="auto" />
-    </View>
+    <div>
+      <input type = "text" id = "searchBar" placeholder = "Search..."></input>
+      <button className = "relocation">Center</button>
+      <div className = "bottomBar">
+        <li className = "buttonList"><button className = "barButton">Resync</button></li>
+        <li className = "buttonList"><button className = "barButton"></button></li>
+        <li className = "buttonList"><button className = "barButton">Profile</button></li>
+        <li className = "buttonList"><button className = "barButton"></button></li>
+        <li className = "buttonList"><button className = "barButton">Settings</button></li>
+      </div>
+    </div>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
