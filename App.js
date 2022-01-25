@@ -1,9 +1,30 @@
-import SwipeUpDown from 'react-native-swipe-up-down'
-import React from "react";
-import { StyleSheet, SafeAreaView, View, TouchableOpacity, Text, TextInput } from 'react-native';
+//import SwipeUpDown from 'react-native-swipe-up-down'
+import React from 'react';
+import { useRef } from 'react';
+import { StyleSheet, Animated, View, TouchableOpacity, Text, TextInput, Dimensions, PanResponder } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 function App() {
-  const[text, onChangeText] = React.useState("Search ...")
+  const[text, onChangeText] = React.useState("Search ...");
+  const pan = useRef(new Animated.ValueXY()).current;
+  const [hidden, setHidden] = React.useState(true);
+
+  // Attempt at pull menu, doesn't work
+  // const panResponder = useRef(
+  //   PanResponder.create({
+  //     onMoveShouldSetPanResponder: () => true,
+  //     onPanResponderGrant: () => {
+  //       pan.setOffset({
+  //         y: pan.y._value,
+  //       });
+  //     },
+  //     onPanResponderMove: Animated.event([null, { dy: pan.y }], {useNativeDriver: false}),
+  //     onPanResponderRelease: () => {
+  //       pan.flattenOffset();
+  //     },
+  //   })
+  // ).current;
+
   return (
     <>
     {/* <SwipeUpDown	//THIS IS THE SWIPE UP LIST
@@ -31,17 +52,18 @@ function App() {
       flex: 1,
     }}>
       <View style = {{ // THIS IS THE SEARCH BAR
+        position: 'absolute',
         backgroundColor: 'white',
         top: 20,
         left: 5,
         borderWidth: 1,
-        borderRadius: 10,
-        width: "50%",
+        borderRadius: 6,
+        width: '65%',
         padding: 5,
       }}>
         <TextInput styles = {{
-            borderColor: "black",
-            width: "50%",
+            borderColor: 'black',
+            width: '50%',
             borderWidth: 1,
             borderRadius: 10,
             padding: 10,
@@ -50,7 +72,56 @@ function App() {
             placeholder = "Search..."
         ></TextInput>
       </View>
+      
+      <View style = {{ // Right-side buttons
+        position: 'absolute',
+        top: 20,
+        right: 5
+      }}>
+        <TouchableOpacity activeOpacity='1' style={[styles.rightButton]}> 
+        </TouchableOpacity>
+        <View style = {{height: 10}}/>
+        <TouchableOpacity activeOpacity='1' style={[styles.rightButton]}>
+          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
+          <Icon name = 'direction' type = 'entypo' color = 'rgba(45,45,45,255)' size = {35}/>
+          </View>
+          <Text style = {[styles.buttonText]}></Text>
+        </TouchableOpacity>
+      </View>
 
+      <TouchableOpacity // Music Menu
+        style = {[styles.musicMenu]}
+        onPress = {() => setHidden(false)}
+        activeOpacity = {0.95}
+      >
+        <Animated.View style = {{
+          position: 'relative',
+          alignSelf: 'center',
+          backgroundColor: 'rgba(100,100,100,255)',
+          height: 4,
+          borderRadius: 5,
+          width: "10%",
+          top: 2,
+          zIndex: 2
+        }}/>
+      </TouchableOpacity>
+      {/* {!hidden && ( // Attempt at pull menu, doesn't work
+        <Animated.View
+          style = {{
+            transform: [{ translateY: pan.y }],
+            position: 'absolute',
+            bottom: 100
+          }}
+          {...panResponder.panHandlers}>
+            <View style={{
+              height: 100,
+              width: 600,
+              backgroundColor: 'blue',
+              zIndex: 40
+            }} />
+        </Animated.View>
+      )} */}
+        
       <View style = {{ // Bottom bar button navigation
         position: 'absolute',
         bottom: 30,
@@ -61,14 +132,23 @@ function App() {
           justifyContent: 'space-evenly',
           flexDirection: 'row',
         }}>
-          <TouchableOpacity activeOpacity='0.8' style={[styles.button]}> 
-            <Text style = {[styles.buttonText]}>Resync</Text>
+          <TouchableOpacity activeOpacity='1' style={[styles.button]}>
+          <View style = {{marginTop: 'auto', marginBottom: 'auto', bottom: 3}}>
+              <Icon name = 'refresh' type = 'evilicon' color = 'white' size = {40}/>
+              <Text style = {[styles.buttonText]}>Resync</Text>
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity='0.8' style={[styles.button]}></TouchableOpacity>
+
+          <TouchableOpacity activeOpacity='1' style={[styles.button]}></TouchableOpacity>
           <View style = {{width: 90}}/>
-          <TouchableOpacity activeOpacity='0.8' style={[styles.button]}></TouchableOpacity>
-          <TouchableOpacity activeOpacity='0.8' style={[styles.button]}>
-          <Text style = {[styles.buttonText]}>Settings</Text>
+          <TouchableOpacity activeOpacity='1' style={[styles.button]}></TouchableOpacity>
+
+          <TouchableOpacity activeOpacity='1' style={[styles.button]}>
+            <View style = {{marginTop: 'auto', marginBottom: 'auto', bottom: -1}}>
+              <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/>
+              <View style = {{height: 2}}/>
+              <Text style = {[styles.buttonText]}>Settings</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -92,7 +172,7 @@ function App() {
           height: 70
         }} />
       </View>
-      <TouchableOpacity activeOpacity='0.8' style = {{ // Profile button
+      <TouchableOpacity activeOpacity='1' style = {{ // Profile button
         position: 'absolute',
         alignSelf: 'center',
         background: 'linear-gradient(to top, rgba(35,35,35,255), rgba(60,60,60,255))',
@@ -102,7 +182,8 @@ function App() {
         height: 85,
         borderRadius: 50,
         bottom: 20,
-        zIndex: 10
+        zIndex: 10,
+        opacity: 0.95
       }} >
         <View style = {[styles.profileButtonInner]} />
        </TouchableOpacity>
@@ -121,19 +202,41 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(45,45,45,255)',
     shadowOpacity: 0.75,
     shadowRadius: 5,
+    opacity: 0.9
+  },
+  rightButton: {
+    width: 65,
+    height: 65,
+    borderRadius: 10,
+    backgroundColor: 'rgba(180,180,180,255)',
+    shadowOpacity: 0.75,
+    shadowRadius: 5,
+    opacity: 0.9
   },
   profileButtonInner: {
     alignSelf: 'center',
     bottom: -6,
-    backgroundColor: 'rgba(100,100,100,255)',
+    backgroundColor: 'rgba(180,180,180,255)',
     width: 75,
     height: 75,
     borderRadius: 50,
   },
   buttonText: {
     position: 'relative',
-    top: 40,
     alignSelf: 'center',
     color: 'white',
+  },
+  musicMenu: {
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: 110,
+    width: '98%',
+    height: 70,
+    borderRadius: 10,
+    backgroundColor: 'rgba(45,45,45,255)',
+    opacity: 0.95,
+    shadowOpacity: 0.75,
+    shadowRadius: 5,
+    zIndex: 1
   },
 });
