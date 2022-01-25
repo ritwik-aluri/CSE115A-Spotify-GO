@@ -26,11 +26,11 @@ function App() {
           zIndex: 100,
         }} // style for swipe
       /> */}
-    <View style = {{ //THIS IS THE BACKGROUND OF THE APP
+    <View style = {{ // THIS IS THE BACKGROUND OF THE APP
       flexDirection: 'column',
       flex: 1,
     }}>
-      <View style = {{ //THIS IS THE SEARCH BAR
+      <View style = {{ // THIS IS THE SEARCH BAR
         backgroundColor: 'white',
         top: 20,
         left: 5,
@@ -47,21 +47,21 @@ function App() {
             padding: 10,
           }}
             onChangeText = {onChangeText}
-            placeholder = "Search ..."
+            placeholder = "Search..."
         ></TextInput>
       </View>
 
-      <View style = {{
+      <View style = {{ // Bottom bar button navigation
         position: 'absolute',
         bottom: 30,
         width: '100%',
         zIndex: 1
       }}>
-        <View style = {{
+        <View style = {{ // Spacing Buttons
           justifyContent: 'space-evenly',
           flexDirection: 'row',
         }}>
-          <TouchableOpacity activeOpacity='0.8' style={[styles.button]}>
+          <TouchableOpacity activeOpacity='0.8' style={[styles.button]}> 
             <Text style = {[styles.buttonText]}>Resync</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity='0.8' style={[styles.button]}></TouchableOpacity>
@@ -72,19 +72,19 @@ function App() {
           </TouchableOpacity>
         </View>
       </View>
-      <View style = {{
+      <View style = {{ // Background
         position: 'absolute',
         bottom: 0,
         width: '100%'
       }}>
-        <View style = {{
+        <View style = {{ // Background gradiance
           position: 'relative',
           alignSelf: 'center',
           background: 'linear-gradient(to top, rgba(40,40,40,255), rgba(255,0,0,0))',
           width: '100%',
           height: 30
         }} />
-        <View style = {{
+        <View style = {{ // Background color
           position: 'relative',
           bottom: 0,
           backgroundColor: 'rgba(40,40,40,255)',
@@ -92,7 +92,7 @@ function App() {
           height: 70
         }} />
       </View>
-      <TouchableOpacity activeOpacity='0.8' style = {{
+      <TouchableOpacity activeOpacity='0.8' style = {{ // Profile button
         position: 'absolute',
         alignSelf: 'center',
         background: 'linear-gradient(to top, rgba(35,35,35,255), rgba(60,60,60,255))',
