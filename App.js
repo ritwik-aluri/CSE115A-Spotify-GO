@@ -1,11 +1,13 @@
 import "./style.css"
-
-import react from "react";
 import SwipeUpDown from 'react-native-swipe-up-down'
+import React from "react"
+import {SafeAreaView, StyleSheet, TextInput} from "react-native"
 import { View, Text } from "react-native";
 
 function App() {
-  
+  const[text, onChangeText] = React.useState("Search ...")
+
+
   return (
     <>
     <SwipeUpDown	
@@ -29,10 +31,30 @@ function App() {
         }} // style for swipe
       />
     <View style = {{
-      backgroundColor: 'white',
+      backgroundColor: 'black',
       flexDirection: 'column',
       flex: 1,
     }}>
+      <View style = {{
+        backgroundColor: 'white',
+        top: 20,
+        left: 5,
+        borderWidth: 1,
+        borderRadius: 10,
+        width: "50%",
+        padding: 5,
+     }}>
+      <TextInput styles = {{
+          borderColor: "black",
+          width: "50%",
+          borderWidth: 1,
+          borderRadius: 10,
+          padding: 10,
+        }}
+          onChangeText = {onChangeText}
+          placeholder = "Search ..."
+      ></TextInput>
+    </View>
       <View style = {{
         position: 'absolute',
         alignSelf: 'center',
@@ -70,8 +92,13 @@ function App() {
        }} />
     </View>
     </>
+
+
+
   );
 }
 
 
+
 export default App;
+
