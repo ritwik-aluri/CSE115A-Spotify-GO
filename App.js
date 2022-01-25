@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-    <SwipeUpDown	
+    <SwipeUpDown	//THIS IS THE SWIPE UP LIST
 	      itemMini = {<li className = "buttonList"><button className = "barButton" id = "songListButton">List</button></li>} // Pass props component when collapsed
 	      itemFull = {<div className = "songListDown" id = "songList">
         <a href = "#">1</a>
@@ -30,12 +30,12 @@ function App() {
           zIndex: 100,
         }} // style for swipe
       />
-    <View style = {{
+    <View style = {{ //THIS IS THE BACKGROUND OF THE APP
       backgroundColor: 'black',
       flexDirection: 'column',
       flex: 1,
     }}>
-      <View style = {{
+      <View style = {{ //THIS IS THE SEARCH BAR
         backgroundColor: 'white',
         top: 20,
         left: 5,
