@@ -1,13 +1,51 @@
 //import SwipeUpDown from 'react-native-swipe-up-down'
 import React from 'react';
 import { useRef } from 'react';
-import { StyleSheet, Animated, View, TouchableOpacity, Text, TextInput, Dimensions, PanResponder } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import { Text, TextInput } from 'react-native';
+import { FlatList } from 'react-native';
+import { Dimensions } from 'react-native'; 
+import { Animated, PanResponder } from 'react-native'; 
+import { SafeAreaView } from 'react-native';
+import { StatusBar } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 function App() {
   const[text, onChangeText] = React.useState("Search ...");
   const pan = useRef(new Animated.ValueXY()).current;
   const [hidden, setHidden] = React.useState(true);
+
+  const dataset = [
+    {
+      id: 'test',
+      title: 'User 1',
+    },
+    {
+      id: 'test1',
+      title: 'User 2',
+    },
+  ];
+
+  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+      <Text style={[styles.title, textColor]}>{item.title}</Text>
+    </TouchableOpacity>
+  );
+
+  const [selectedId, setSelectedId] = React.useState(null);
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "grey" : "grey";
+    const color = item.id === selectedId ? 'white' : 'black';
+    return (
+      <Item
+        item={item}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
+  };
 
   // Attempt at pull menu, doesn't work
   // const panResponder = useRef(
@@ -47,6 +85,47 @@ function App() {
           zIndex: 100,
         }} // style for swipe
       /> */}
+    { !hidden && (
+      <View style = {{ // Template menu
+        position: 'fixed',
+        alignSelf: 'center',
+        width: '98%',
+        height: '80%',
+        bottom: 110,
+        borderRadius: 10,
+        backgroundColor: 'rgba(45,45,45,255)',
+        opacity: 0.95,
+        shadowOpacity: 0.75,
+        shadowRadius: 5,
+        zIndex: 10
+      }}>
+        <TouchableOpacity activeOpacity = '1' style = {{ // Exit button for menu
+          position: 'relative',
+          width: 40,
+          height: 40,
+          borderRadius: 10,
+          backgroundColor: 'rgba(35,35,35,255)',
+          zIndex: 11
+        }} onPress = {() => setHidden(true)}>
+          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
+            <Icon name = 'cross' type = 'entypo' color = 'black' size = {38}/>
+          </View>
+        </TouchableOpacity>
+        <SafeAreaView style = {{
+          flex: 1,
+          position: 'relative',
+          alignSelf: 'center',
+          width: '95%',
+          height: '10%',
+          top: 10,
+          //backgroundColor: 'black'
+        }}>
+          <FlatList
+            data = {dataset}
+            renderItem = {renderItem}
+          />
+        </SafeAreaView>
+      </View>)}
     <View style = {{ // THIS IS THE BACKGROUND OF THE APP
       flexDirection: 'column',
       flex: 1,
@@ -78,10 +157,10 @@ function App() {
         top: 20,
         right: 5
       }}>
-        <TouchableOpacity activeOpacity='1' style={[styles.rightButton]}> 
+        <TouchableOpacity activeOpacity = '1' style = {[styles.rightButton]}> 
         </TouchableOpacity>
         <View style = {{height: 10}}/>
-        <TouchableOpacity activeOpacity='1' style={[styles.rightButton]}>
+        <TouchableOpacity activeOpacity = '1' style = {[styles.rightButton]}>
           <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
           <Icon name = 'direction' type = 'entypo' color = 'rgba(45,45,45,255)' size = {35}/>
           </View>
@@ -89,12 +168,11 @@ function App() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity // Music Menu
+      { hidden && (<TouchableOpacity // Music Menu
         style = {[styles.musicMenu]}
-        onPress = {() => setHidden(false)}
         activeOpacity = {0.95}
       >
-        <Animated.View style = {{
+        {/* <Animated.View style = {{
           position: 'relative',
           alignSelf: 'center',
           backgroundColor: 'rgba(100,100,100,255)',
@@ -103,8 +181,8 @@ function App() {
           width: "10%",
           top: 2,
           zIndex: 2
-        }}/>
-      </TouchableOpacity>
+        }}/> */}
+      </TouchableOpacity>)}
       {/* {!hidden && ( // Attempt at pull menu, doesn't work
         <Animated.View
           style = {{
@@ -139,8 +217,16 @@ function App() {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity activeOpacity='1' style={[styles.button]}></TouchableOpacity>
+          <TouchableOpacity activeOpacity='1' style={[styles.button]}>
+            <View style = {{marginTop: 'auto', marginBottom: 'auto', top: 2}}>
+              <Icon name = 'list' type = 'entypo' color = 'white' size = {34}/>
+            </View>
+            <Text style = {[styles.buttonText]} onPress = {() => setHidden(false)}>Nearby</Text>
+            <View style = {{height: 8}}/>
+          </TouchableOpacity>
+
           <View style = {{width: 90}}/>
+
           <TouchableOpacity activeOpacity='1' style={[styles.button]}></TouchableOpacity>
 
           <TouchableOpacity activeOpacity='1' style={[styles.button]}>
@@ -202,7 +288,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(45,45,45,255)',
     shadowOpacity: 0.75,
     shadowRadius: 5,
-    opacity: 0.9
+    opacity: 0.9,
+    zIndex: 20
   },
   rightButton: {
     width: 65,
@@ -239,4 +326,12 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     zIndex: 1
   },
+  item: {
+    position: 'relative',
+    alignSelf: 'center',
+    top: 0,
+    width: '100%',
+    height: 50,
+    borderRadius: 5,
+  }
 });
