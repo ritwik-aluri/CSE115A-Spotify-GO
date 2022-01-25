@@ -1,16 +1,14 @@
 import "./style.css"
+
+import react from "react";
 import SwipeUpDown from 'react-native-swipe-up-down'
-import React from "react"
-import {SafeAreaView, StyleSheet, TextInput} from "react-native"
 import { View, Text } from "react-native";
 
 function App() {
-  const[text, onChangeText] = React.useState("Search ...")
-
-
+  
   return (
     <>
-    <SwipeUpDown	//THIS IS THE SWIPE UP LIST
+    <SwipeUpDown	
 	      itemMini = {<li className = "buttonList"><button className = "barButton" id = "songListButton">List</button></li>} // Pass props component when collapsed
 	      itemFull = {<div className = "songListDown" id = "songList">
         <a href = "#">1</a>
@@ -30,31 +28,11 @@ function App() {
           zIndex: 100,
         }} // style for swipe
       />
-    <View style = {{ //THIS IS THE BACKGROUND OF THE APP
-      backgroundColor: 'black',
+    <View style = {{
+      backgroundColor: 'white',
       flexDirection: 'column',
       flex: 1,
     }}>
-      <View style = {{ //THIS IS THE SEARCH BAR
-        backgroundColor: 'white',
-        top: 20,
-        left: 5,
-        borderWidth: 1,
-        borderRadius: 10,
-        width: "50%",
-        padding: 5,
-     }}>
-      <TextInput styles = {{
-          borderColor: "black",
-          width: "50%",
-          borderWidth: 1,
-          borderRadius: 10,
-          padding: 10,
-        }}
-          onChangeText = {onChangeText}
-          placeholder = "Search ..."
-      ></TextInput>
-    </View>
       <View style = {{
         position: 'absolute',
         alignSelf: 'center',
@@ -92,13 +70,8 @@ function App() {
        }} />
     </View>
     </>
-
-
-
   );
 }
 
 
-
 export default App;
-
