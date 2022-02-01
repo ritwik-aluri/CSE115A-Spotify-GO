@@ -11,8 +11,6 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-// @react-native-firebase/app
-import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 // react-native-maps
 import com.airbnb.android.react.maps.MapsPackage;
 
@@ -60,7 +58,6 @@ public class PackageList {
   public ArrayList<ReactPackage> getPackages() {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
-      new ReactNativeFirebaseAppPackage(),
       new MapsPackage()
     ));
   }
