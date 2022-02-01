@@ -218,7 +218,7 @@ dependencies {
         implementation jscFlavor
     }
 
-    ////// Ritwik: Adding the following lines for Firebase reasons
+    ////// Ritwik: Adding following lines for Firebase reasons
     // Import Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     // Add dependency for Firebase SDK for Google Analytics
