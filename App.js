@@ -1,14 +1,312 @@
 import React from 'react';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
-import {Marker} from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   View,
+  TouchableOpacity,
+  FlatList,
+  Dimensions,
 } from 'react-native';
+// import { Icon } from 'react-native-elements';
+
+export default function App() {
+  const[text, onChangeText] = React.useState("Search ...");
+  const [hidden, setHidden] = React.useState(true);
+
+  const dataset = [
+    {
+      id: 'test',
+      title: 'User 1',
+    },
+    {
+      id: 'test1',
+      title: 'User 2',
+    },
+  ];
+
+  const Item = ({ item, onPress, backgroundColor, textColor }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+      <Text style={[styles.title, textColor]}>{item.title}</Text>
+    </TouchableOpacity>
+  );
+
+  const [selectedId, setSelectedId] = React.useState(null);
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? "grey" : "grey";
+    const color = item.id === selectedId ? 'white' : 'black';
+    return (
+      <Item
+        item={item}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
+  };
+
+  const mapView = ( // Map Display
+    <MapView
+        provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
+        style={styles.map}
+        customMapStyle={darkMap}
+        region={{
+          latitude: 37.78825,
+          longitude: -122.4324,
+          latitudeDelta: 0.015,
+          longitudeDelta: 0.0121,
+        }}
+        showsUserLocation={true}>
+        <Marker
+          coordinate={{latitude: 37.78825, longitude: -122.4324}}
+          pinColor={'darkgrey'}
+          title={'Test'}
+          description={'Test Desc.'}
+        />
+      </MapView>
+  );
+
+  const searchBar = ( // Search Bar Display
+    <View style = {{
+      position: 'absolute',
+      backgroundColor: 'white',
+      top: 20,
+      left: 5,
+      borderWidth: 1,
+      borderRadius: 6,
+      width: '65%',
+      padding: 5,
+    }}>
+      <TextInput styles = {{
+          borderColor: 'black',
+          width: '50%',
+          borderWidth: 1,
+          borderRadius: 10,
+          padding: 10,
+        }}
+          onChangeText = {onChangeText}
+          placeholder = "Search..."
+      ></TextInput>
+    </View>
+  );
+
+  const rightSideButtons = (
+    <View style = {{ // Right-side buttons
+      position: 'absolute',
+      top: 20,
+      right: 5
+    }}>
+      <TouchableOpacity activeOpacity = '1' style = {[styles.rightButton]}> 
+      </TouchableOpacity>
+      <View style = {{height: 10}}/>
+      <TouchableOpacity activeOpacity = '1' style = {[styles.rightButton]}>
+        <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
+          <Text style = {[styles.buttonText]}>Relocate</Text>
+        {/* <Icon name = 'direction' type = 'Entypo' color = 'rgba(45,45,45,255)' size = {35}/> */}
+        </View>
+        <Text style = {[styles.buttonText]}></Text>
+      </TouchableOpacity>
+    </View>
+  )
+
+  const bottomNagivationBackground = (
+    <View style = {{ // Background
+      position: 'absolute',
+      bottom: 0,
+      width: '100%'
+    }}>
+      {/* <View style = {{ // Background gradiance
+        position: 'relative',
+        alignSelf: 'center',
+        background: 'linear-gradient(to top, rgba(40,40,40,255), rgba(255,0,0,0))',
+        width: '100%',
+        height: 30
+      }} /> */}
+      <View style = {{ // Background color
+        position: 'relative',
+        bottom: 0,
+        backgroundColor: 'rgba(40,40,40,255)',
+        width: '100%',
+        height: 70
+      }} />
+    </View>
+  )
+
+  const bottomNagivationButtons = (
+    <View style = {{ // Bottom bar button navigation
+      position: 'absolute',
+      bottom: 30,
+      width: '100%',
+      zIndex: 1
+    }}>
+      <View style = {{ // Spacing Buttons
+        justifyContent: 'space-evenly',
+        flexDirection: 'row',
+      }}>
+        <TouchableOpacity activeOpacity='1' style={[styles.button]}>
+        <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
+            {/* <Icon name = 'refresh' type = 'EvilIcons' color = 'white' size = {40}/> */}
+            <Text style = {[styles.buttonText]}>Resync</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity activeOpacity='1' style={[styles.button]}>
+          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
+            {/* <Icon name = 'list' type = 'entypo' color = 'white' size = {34}/> */}
+            <Text style = {[styles.buttonText]} onPress = {() => setHidden(false)}>Nearby</Text>
+          </View>
+          {/* <View style = {{height: 8}}/> */}
+        </TouchableOpacity>
+        <View style = {{width: 90}}/>
+        <TouchableOpacity activeOpacity='1' style={[styles.button]}></TouchableOpacity>
+        <TouchableOpacity activeOpacity='1' style={[styles.button]}>
+          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
+            {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
+            {/* <View style = {{height: 2}}/> */}
+            <Text style = {[styles.buttonText]}>Settings</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  )
+
+  const profileButton = (
+    <TouchableOpacity activeOpacity='1' style = {{ // Profile button
+      position: 'absolute',
+      alignSelf: 'center',
+      backgroundColor: 'rgba(60,60,60,255)',
+      shadowOpacity: 1,
+      shadowRadius: 10,
+      width: 85,
+      height: 85,
+      borderRadius: 50,
+      bottom: 20,
+      zIndex: 10,
+      opacity: 0.95
+    }}>
+      <View style = {[styles.profileButtonInner]} />
+     </TouchableOpacity>
+  )
+
+  const musicMenu = (<View style = {{ // Template menu
+    position: 'absolute',
+    alignSelf: 'center',
+    width: '98%',
+    height: '80%',
+    bottom: 110,
+    borderRadius: 10,
+    backgroundColor: 'rgba(45,45,45,255)',
+    opacity: 0.95,
+    shadowOpacity: 0.75,
+    shadowRadius: 5,
+    elevation: 3
+  }}>
+    <TouchableOpacity activeOpacity = '1' style = {{ // Exit button for menu
+      position: 'relative',
+      width: 40,
+      height: 40,
+      borderRadius: 10,
+      backgroundColor: 'red',
+      elevation: 4
+    }} onPress = {() => setHidden(true)}>
+      <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
+        {/* <Icon name = 'cross' type = 'entypo' color = 'black' size = {38}/> */}
+      </View>
+    </TouchableOpacity>
+    <SafeAreaView style = {{
+      flex: 1,
+      position: 'relative',
+      alignSelf: 'center',
+      width: '95%',
+      height: '10%',
+      top: 10,
+      //backgroundColor: 'black'
+    }}>
+      <FlatList
+        data = {dataset}
+        renderItem = {renderItem}
+      />
+    </SafeAreaView>
+  </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      {mapView}
+      {bottomNagivationBackground}
+      {searchBar}
+      {rightSideButtons}
+      {bottomNagivationButtons}
+      {profileButton}
+      { !hidden && (musicMenu)}
+      { hidden && (<TouchableOpacity // Music Menu
+        style = {[styles.musicMenu]}
+        activeOpacity = {0.95}
+      />)}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    height: '100%',
+    width: '100%',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  button: {
+    width: 65,
+    height: 65,
+    borderRadius: 10,
+    backgroundColor: 'rgba(45,45,45,255)',
+    shadowOpacity: 0.75,
+    shadowRadius: 5,
+    opacity: 0.9,
+    elevation: 5
+  },
+  rightButton: {
+    width: 65,
+    height: 65,
+    borderRadius: 10,
+    backgroundColor: 'rgba(180,180,180,255)',
+    shadowOpacity: 0.75,
+    shadowRadius: 5,
+    elevation: 3,
+    opacity: 0.9
+  },
+  profileButtonInner: {
+    alignSelf: 'center',
+    bottom: -6,
+    backgroundColor: 'rgba(180,180,180,255)',
+    width: 75,
+    height: 75,
+    borderRadius: 50,
+  },
+  buttonText: {
+    position: 'relative',
+    alignSelf: 'center',
+    color: 'white',
+  },
+  musicMenu: {
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: 110,
+    width: '98%',
+    height: 70,
+    borderRadius: 10,
+    backgroundColor: 'rgba(45,45,45,255)',
+    opacity: 0.95,
+    shadowOpacity: 0.75,
+    shadowRadius: 5,
+    zIndex: 1
+  },
+});
 
 var darkMap = [
   {
@@ -196,41 +494,3 @@ var darkMap = [
     ],
   },
 ];
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <MapView
-        provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
-        style={styles.map}
-        customMapStyle={darkMap}
-        region={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}
-        showsUserLocation={true}>
-        <Marker
-          coordinate={{latitude: 37.78825, longitude: -122.4324}}
-          pinColor={'darkgrey'}
-          title={'Test'}
-          description={'Test Desc.'}
-        />
-      </MapView>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: '100%',
-    width: '100%',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-});
