@@ -1,4 +1,4 @@
-package com.spotifygo_dev;
+package com.spotifygodev;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "SpotifyGo_Dev";
+    return "SpotifyGoDev";
   }
 }
