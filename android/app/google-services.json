@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "445520680219",
+    "firebase_url": "https://spotify-go-ba7bf-default-rtdb.firebaseio.com",
     "project_id": "spotify-go-ba7bf",
     "storage_bucket": "spotify-go-ba7bf.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:445520680219:android:c0d18a55d255cc8ddc2fbe",
+        "mobilesdk_app_id": "1:445520680219:android:f2b7a5d240013fe1dc2fbe",
         "android_client_info": {
           "package_name": "com.spotifygodev"
         }
