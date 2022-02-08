@@ -51,6 +51,20 @@ export default function App() {
   var premium;
   var song = dbRef;
   console.log(song);
+  get(child(dbRef, `users/Guy`)).then((snapshot) => {
+    console.log("Inside get statement");
+    if (snapshot.exists()) {
+      console.log(snapshot.val().music);
+      var temp = snapshot.val().music;
+      song = (snapshot.val().music).toString();
+      console.log('Here: ' + song);
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.log(snapshot);
+    console.error(error);
+  });
 
   const dataset = [
     {
