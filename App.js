@@ -47,8 +47,8 @@ export default function App() {
     longitude: 100
   });
 
+  // This is how to pull from the database.
   const dbRef = ref(db);
-  var premium;
   var song = dbRef;
   console.log(song);
   get(child(dbRef, `users/Guy`)).then((snapshot) => {
