@@ -1,7 +1,7 @@
 import React from 'react';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import { getDatabase } from "firebase/database";
+import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -17,6 +17,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
+// import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 // import { Icon } from 'react-native-elements';
 
 export default function App() {
@@ -35,14 +36,26 @@ export default function App() {
     measurementId: "G-MEASUREMENT_ID",
   };
   firebase.initializeApp(config);
-  const database = getDatabase();
-  // var rootRef = firebase.database().ref();
-  // var key = rootRef.key();
+  const db = getDatabase();
+
+  // This is a new push to the database, completely testing.
+  set(ref(db, 'users/' + "Guy"), {
+    music: "Second Chance",
+    premium: true,
+    sharing: true,
+    latitude: 20,
+    longitude: 100
+  });
+
+  const dbRef = ref(db);
+  var premium;
+  var song = dbRef;
+  console.log(song);
 
   const dataset = [
     {
       id: 'test',
-      title: 'User 1',
+      title: song,
     },
     {
       id: 'test1',
