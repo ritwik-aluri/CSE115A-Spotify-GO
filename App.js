@@ -17,10 +17,12 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
+import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
 // import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 // import { Icon } from 'react-native-elements';
 
 export default function App() {
+    authHandler.onLogin();
   const[text, onChangeText] = React.useState("Search ...");
   const [hidden, setHidden] = React.useState(true);
   var config = {
@@ -49,7 +51,7 @@ export default function App() {
 
   // This is how to pull from the database.
   const dbRef = ref(db);
-  var song = dbRef;
+  var song = "test";
   console.log(song);
   get(child(dbRef, `users/Guy`)).then((snapshot) => {
     console.log("Inside get statement");
