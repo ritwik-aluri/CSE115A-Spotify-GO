@@ -21,8 +21,9 @@ import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
 // import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 // import { Icon } from 'react-native-elements';
 
+authHandler.onLogin();
+
 export default function App() {
-    authHandler.onLogin();
   const[text, onChangeText] = React.useState("Search ...");
   const [hidden, setHidden] = React.useState(true);
   var config = {
