@@ -3,7 +3,6 @@ import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export { userList };
@@ -11,7 +10,7 @@ import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
 
 let userList = [];
 
-authHandler.onLogin();
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {

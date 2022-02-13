@@ -17,6 +17,13 @@ import { styles } from './interfaceStyle.js';
 import { darkMap } from './mapStyle.js';
 import Icon_Entypo from 'react-native-vector-icons/Entypo';
 import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
+import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
+
+
+var token_data;
+authHandler.onLogin().then((result) => { token_data = result; console.log("token set"); });
+
 
 export { HomeScreen, ProfileScreen, SettingsScreen };
 import { userList } from './App.js';
