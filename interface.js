@@ -15,7 +15,8 @@ import {
   } from 'react-native';
 import { styles } from './interfaceStyle.js';
 import { darkMap } from './mapStyle.js';
-import Icon from 'react-native-vector-icons';
+import Icon_Entypo from 'react-native-vector-icons/Entypo';
+import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 export { HomeScreen, ProfileScreen, SettingsScreen };
 import { userList } from './App.js';
@@ -93,14 +94,11 @@ function HomeScreen({navigation}){
         top: 20,
         right: 5
       }}>
-        <TouchableOpacity activeOpacity = '1' style = {[styles.rightButton]}> 
+        <TouchableOpacity activeOpacity = '1' style = {[styles.rightButton]}>
         </TouchableOpacity>
         <View style = {{height: 10}}/>
         <TouchableOpacity activeOpacity = '1' style = {[styles.rightButton]}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            <Text style = {[styles.buttonText]}>Relocate</Text>
-          {/* <Icon name = 'direction' type = 'Entypo' color = 'rgba(45,45,45,255)' size = {35}/> */}
-          </View>
+            <Icon_Entypo name = "direction" color = 'rgba(45,45,45,255)' size = {35} style = {{marginLeft: 'auto', marginRight: 'auto', marginTop: '23%'}}/>
           <Text style = {[styles.buttonText]}></Text>
         </TouchableOpacity>
       </View>
@@ -141,33 +139,25 @@ function HomeScreen({navigation}){
         flexDirection: 'row',
       }}>
         <TouchableOpacity activeOpacity='1' style={[styles.button]}>
-        <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'refresh' type = 'EvilIcons' color = 'white' size = {40}/> */}
-            <Text style = {[styles.buttonText]}>Resync</Text>
-          </View>
+          <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_EvilIcons name = 'refresh' color = 'white' size = {40}/></View>
+          <View style = {{marginBottom: '10%'}}><Text style = {[styles.buttonText]}>Resync</Text></View>
+
         </TouchableOpacity>
   
         <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress = {() => setHidden(hidden = false)}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'list' type = 'entypo' color = 'white' size = {34}/> */}
-            <Text style = {[styles.buttonText]} >Nearby</Text>
-          </View>
+          <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name = 'list' color = 'white' size = {34} style = {{marginLeft: 'auto', marginRight: 'auto'}}/></View>
+          <View style = {{marginBottom: '10%'}}><Text style = {[styles.buttonText]} >Nearby</Text></View>
           {/* <View style = {{height: 8}}/> */}
         </TouchableOpacity>
         <View style = {{width: 90}}/>
         <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress={() => navigation.navigate('Profile')}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
-            {/* <View style = {{height: 2}}/> */}
+          <View style = {{marginTop: 'auto', marginBottom: 'auto', marginBottom: '10%'}}>
             <Text style = {[styles.buttonText]}>Profile</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress={() => navigation.navigate('Settings')}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
-            {/* <View style = {{height: 2}}/> */}
-            <Text style = {[styles.buttonText]}>Settings</Text>
-          </View>
+          <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_EvilIcons name = 'gear' color = 'white' size = {33}/></View>
+          <View style = {{marginBottom: '10%'}}><Text style = {[styles.buttonText]}>Settings</Text></View>
         </TouchableOpacity>
       </View>
     </View>

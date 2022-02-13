@@ -46,7 +46,11 @@ export default function App() {
       snapshot.forEach((child) => {
         userList.push({
           id: child.key,
-          title: (child.val().music).toString()
+          title: child.val().music,
+          premium: child.val().premium,
+          sharing: child.val().sharing,
+          latitude: child.val().latitude,
+          longitude: child.val().longitude
         })
       })
     })
