@@ -1,5 +1,4 @@
 apply plugin: "com.android.application"
-// Ritwik: Adding the line below for Firebase stuff
 apply plugin: 'com.google.gms.google-services'
 
 import com.android.build.OutputFile
@@ -221,14 +220,8 @@ dependencies {
         implementation jscFlavor
     }
 
-    ////// Ritwik: Adding following lines for Firebase reasons
-    // Import Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
-    // Add dependency for Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics'
-    // Can add dependencies for other Firebase products here if needed
-    // See: https://firebase.google.com/docs/android/setup#available-libraries
-    //////
 }
 
 // Run this once to be able to run the application with BUCK

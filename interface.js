@@ -159,7 +159,7 @@ function HomeScreen({navigation}){
         <View style = {{width: 90}}/>
         <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress={() => navigation.navigate('Profile')}>
           <View style = {{marginTop: 'auto', marginBottom: 'auto', marginBottom: '10%'}}>
-            <Text style={[styles.buttonText]} onPress={() => { console.log(token_data); Spotify.getCurrSong(token_data["accessToken"]); Spotify.getCurrUserInfo(token_data["accessToken"]); Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"]) }}>test button</Text>
+            <Text style={[styles.buttonText]} onPress={() => { console.log(token_data); Spotify.getCurrSong(token_data["accessToken"]); Spotify.getCurrUserInfo(token_data["accessToken"]); /*Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])*/ }}>test button</Text>
             <Text style = {[styles.buttonText]}>Profile</Text>
           </View>
         </TouchableOpacity>
