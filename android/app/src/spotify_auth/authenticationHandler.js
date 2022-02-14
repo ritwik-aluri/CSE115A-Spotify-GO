@@ -14,6 +14,7 @@ class AuthenticationHandler {
                 'user-follow-modify',
                 'user-library-modify',
                 'user-read-playback-position',
+                'user-read-playback-state',
                 'playlist-modify-private',
                 'app-remote-control',
                 'user-top-read',

@@ -1,6 +1,25 @@
 class SpotifyAPI {
     constructor() {}
 
+    async getPlaybackState(authtoken) {
+        try {
+            let response = await fetch('https://api.spotify.com/v1/me/player', {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Authorization': 'Bearer ' + authtoken,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+            console.log("getPlaybackState: " + JSON.stringify(data.is_playing));
+            return data.is_playing;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async getCurrSong(authtoken) {
         try {
             let response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
@@ -14,7 +33,7 @@ class SpotifyAPI {
 
             const data = await response.json();
             console.log("Currently playing " + data.item.name + " by " + data.item.artists[0].name + " " + data.item.external_urls.spotify + " " + data.item.album.images[2].url + " " + data.item.id)
-            console.log("getCurrSong: " + JSON.stringify(data));
+            //console.log("getCurrSong: " + JSON.stringify(data));
             return JSON.stringify(data);
         } catch (error) {
             console.error(error);
