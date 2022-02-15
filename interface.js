@@ -50,17 +50,17 @@ function HomeScreen({navigation}){
       );
     };
   
-    let avgLatitude;
-    let avgLongitude;
+    let avg_latitude;
+    let avg_longitude;
     if (userList[0] != null) {
-      let totalLatitude = 0;
-      let totalLongitude = 0;
+      let total_latitude = 0;
+      let total_longitude = 0;
       userList.map((marker, index) => {
-        totalLatitude += marker.latitude;
-        totalLongitude += marker.longitude;
+        total_latitude += marker.latitude;
+        total_longitude += marker.longitude;
       })
-      avgLatitude = totalLatitude / userList.length;
-      avgLongitude = totalLongitude / userList.length;
+      avg_latitude = total_latitude / userList.length;
+      avg_longitude = total_longitude / userList.length;
     }
     const mapView = ( // Map Display
       <MapView
@@ -68,8 +68,8 @@ function HomeScreen({navigation}){
           style={styles.map}
           customMapStyle={darkMap}
           region={{
-            latitude: avgLatitude,
-            longitude: avgLongitude,
+            latitude: avg_latitude,
+            longitude: avg_longitude,
             latitudeDelta: 0.0005,
             longitudeDelta: 0.003,
           }}
