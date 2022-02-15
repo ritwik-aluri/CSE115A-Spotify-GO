@@ -59,7 +59,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{
-    headerShown: false
+    headerShown: false, animation: "none",
       }}>
         <Stack.Screen name = "Home" component={HomeScreen}/>
         <Stack.Screen name = "Profile" component={ProfileScreen}/>

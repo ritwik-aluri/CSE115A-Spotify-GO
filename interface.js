@@ -21,7 +21,7 @@ import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
 
 
-var token_data;
+let token_data;
 authHandler.onLogin().then((result) => { token_data = result; console.log("token set"); });
 
 
@@ -157,10 +157,9 @@ function HomeScreen({navigation}){
           {/* <View style = {{height: 8}}/> */}
         </TouchableOpacity>
         <View style = {{width: 90}}/>
-        <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity activeOpacity='1' style={[styles.button]}>
           <View style = {{marginTop: 'auto', marginBottom: 'auto', marginBottom: '10%'}}>
             <Text style={[styles.buttonText]} onPress={() => { console.log(token_data); Spotify.getCurrSong(token_data["accessToken"]); Spotify.getCurrUserInfo(token_data["accessToken"]); /*Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])*/ }}>test button</Text>
-            <Text style = {[styles.buttonText]}>Profile</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress={() => navigation.navigate('Settings')}>
@@ -184,7 +183,7 @@ function HomeScreen({navigation}){
         bottom: 20,
         zIndex: 10,
         opacity: 0.95
-      }}>
+      }} onPress={() => navigation.navigate('Profile')}>
         <View style = {[styles.profileButtonInner]} />
        </TouchableOpacity>
     )
@@ -248,6 +247,7 @@ function HomeScreen({navigation}){
   }
   
 function ProfileScreen({navigation}){
+  let [hidden, setHidden] = React.useState(true);
   const bottomNagivationButtons = (
     <View style = {{ // Bottom bar button navigation
       position: 'absolute',
@@ -304,15 +304,21 @@ function ProfileScreen({navigation}){
       bottom: 20,
       zIndex: 10,
       opacity: 0.95
-    }}>
+    }} onPress={() => navigation.navigate('Profile')}>
       <View style = {[styles.profileButtonInner]} />
      </TouchableOpacity>
   )
-  const profileText = (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-  <Text>Profile Screen</Text>
+  const profileHeader = (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
+  <Text style = {{fontSize: 40, fontWeight: "bold"}}>Profile</Text>
+  </View>)
+  const profileText = (<View style={{ flex: 3, justifyContent: 'flex-start' }}>
+  <Text style = {{fontSize: 20}}>Username: </Text>
+  <Text>{"\n"}</Text>
+  <Text style = {{fontSize:20}}>Current Song Playing:</Text>
 </View>)
   return (
     <View style={styles.container}>
+      {profileHeader}
       {profileText}
       {bottomNagivationButtons}
       {profileButton}
@@ -321,6 +327,7 @@ function ProfileScreen({navigation}){
 }
 
 function SettingsScreen({navigation}){
+  let [hidden, setHidden] = React.useState(true);
   const bottomNagivationButtons = (
     <View style = {{ // Bottom bar button navigation
       position: 'absolute',
@@ -347,14 +354,14 @@ function SettingsScreen({navigation}){
           {/* <View style = {{height: 8}}/> */}
         </TouchableOpacity>
         <View style = {{width: 90}}/>
-        <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity activeOpacity='1' style={[styles.button]}>
           <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
             {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
             {/* <View style = {{height: 2}}/> */}
             <Text style = {[styles.buttonText]}>Profile</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress={() => navigation.navigate('Settings')}>
+        <TouchableOpacity activeOpacity='1' style={[styles.button]}>
           <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
             {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
             {/* <View style = {{height: 2}}/> */}
@@ -377,7 +384,7 @@ function SettingsScreen({navigation}){
       bottom: 20,
       zIndex: 10,
       opacity: 0.95
-    }}>
+    }} onPress={() => navigation.navigate('Profile')}>
       <View style = {[styles.profileButtonInner]} />
      </TouchableOpacity>
   )
