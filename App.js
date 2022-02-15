@@ -46,6 +46,7 @@ export default function App() {
         userList.push({
           id: child.key,
           title: child.val().music,
+          artist: 'N/A',
           premium: child.val().premium,
           sharing: child.val().sharing,
           latitude: child.val().latitude,
@@ -54,6 +55,8 @@ export default function App() {
       })
     })
   };
+
+  userList.length = 0;
   populateList();
 
   return (

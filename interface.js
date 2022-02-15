@@ -31,22 +31,35 @@ import { userList } from './App.js';
 function HomeScreen({navigation}){
     let [text, onChangeText] = React.useState("Search ...");
     let [hidden, setHidden] = React.useState(true);
-    const Item = ({ item, onPress, backgroundColor, textColor }) => (
-      <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-        <Text style={[styles.title, textColor]}>{item.title}</Text>
-      </TouchableOpacity>
+    
+    const Item = ({ item }) => (
+      <View style={[styles.listItem]}>
+        <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
+          <View style={{width: '90%', flexDirection: 'row'}}>
+            <View style={{
+              width: 60,
+              height: 60,
+              left: 5,
+              backgroundColor: 'rgba(10,120,50,100)',
+              borderRadius: 5
+              }}/>
+            <View style={{flexDirection: 'column', justifyContent: 'center', left: 12}}>
+              <Text style = {{color: 'white'}}>{item.title}</Text>
+              <Text style = {{color: 'grey'}}>{item.artist}</Text>
+              <Text style = {{color: 'grey'}}>User: {item.id}</Text>
+            </View>
+          </View>
+          <TouchableOpacity activeOpacity = '1' style={{justifyContent: 'center', width: '10%'}}>
+            <Icon_Entypo name="dots-three-horizontal" color="grey" size={18}/>
+          </TouchableOpacity>
+        </View>
+
+      </View>
     );
-  
-    const [selectedId, setSelectedId] = React.useState(null);
-    const renderItem = ({ item }) => {
-      const backgroundColor = item.id === selectedId ? "grey" : "grey";
-      const color = item.id === selectedId ? 'white' : 'black';
+
+    const renderItem = ({item}) => {
       return (
-        <Item
-          item={item}
-          backgroundColor={{ backgroundColor }}
-          textColor={{ color }}
-        />
+        <Item item={item}/>
       );
     };
   
@@ -191,44 +204,45 @@ function HomeScreen({navigation}){
     const musicMenu = (<View style = {{ // Template menu
       position: 'absolute',
       alignSelf: 'center',
-      width: '98%',
+      width: '95%',
       height: '80%',
       bottom: 110,
-      borderRadius: 10,
+      borderRadius: 5,
       backgroundColor: 'rgba(45,45,45,255)',
       opacity: 0.95,
       shadowOpacity: 0.75,
       shadowRadius: 5,
-      elevation: 3
+      elevation: 4
     }}>
       <TouchableOpacity activeOpacity = '1' style = {{ // Exit button for menu
         position: 'relative',
         width: 40,
         height: 40,
-        borderRadius: 10,
-        backgroundColor: 'red',
+        borderRadius: 5,
+        backgroundColor: 'rgba(100,100,100,255)',
         elevation: 4
       }} onPress = {() => setHidden(hidden = true)}>
         <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-          {/* <Icon name = 'cross' type = 'entypo' color = 'black' size = {38}/> */}
+          <Icon_Entypo name = 'back' color = 'rgba(45,45,45,255)' size = {26} style={{marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}/>
         </View>
       </TouchableOpacity>
-      <SafeAreaView style = {{
-        flex: 1,
-        position: 'relative',
-        alignSelf: 'center',
-        width: '95%',
-        height: '10%',
-        top: 10,
-        //backgroundColor: 'black'
-      }}>
-        <FlatList
-          data = {userList}
-          renderItem = {renderItem}
-        />
-      </SafeAreaView>
+        <SafeAreaView style = {{
+          position: 'relative',
+          alignSelf: 'center',
+          top: 5,
+          width: '100%',
+          height: '92%'
+        }}>
+          <FlatList
+            data = {userList}
+            renderItem = {renderItem}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          />
+        </SafeAreaView>
     </View>
     );
+	
     return (
       <View style={styles.container}>
         {mapView}
@@ -238,10 +252,27 @@ function HomeScreen({navigation}){
         {bottomNagivationButtons}
         {profileButton}
         { !hidden && (musicMenu)}
-        { hidden && (<TouchableOpacity // Music Menu
-          style = {[styles.musicMenu]}
-          activeOpacity = {0.95}
-        />)}
+        { hidden && (
+          <View style={[styles.musicMenu]}>
+            <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
+              <View style={{
+                width: 60,
+                height: 60,
+                left: 5,
+                backgroundColor: 'rgba(10,120,50,100)',
+                borderRadius: 5,
+                shadowOpacity: 0.75,
+                shadowRadius: 5,
+                elevation: 4
+              }}/>
+              <View style={{flexDirection: 'column', justifyContent: 'center', left: 12}}>
+                <Text style = {{color: 'white'}}>N/A</Text>
+                <Text style = {{color: 'grey'}}>N/A</Text>
+                <Text style = {{color: 'grey'}}>User: N/A</Text>
+              </View>
+            </View>
+          </View>
+        )}
       </View>
     );
   }

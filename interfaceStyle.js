@@ -47,14 +47,22 @@ const styles = StyleSheet.create({
       position: 'absolute',
       alignSelf: 'center',
       bottom: 110,
-      width: '98%',
+      width: '95%',
       height: 70,
-      borderRadius: 10,
+      borderRadius: 5,
       backgroundColor: 'rgba(45,45,45,255)',
       opacity: 0.95,
       shadowOpacity: 0.75,
       shadowRadius: 5,
-      zIndex: 1
+      elevation: 1
     },
+    listItem: {
+      position: 'relative',
+      alignSelf: 'center',
+      width: '100%',
+      height: 70,
+      borderRadius: 5,
+      opacity: 0.95
+    }
   });
   
