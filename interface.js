@@ -50,11 +50,11 @@ function HomeScreen({navigation}){
       );
     };
   
-    var avgLatitude;
-    var avgLongitude;
+    let avgLatitude;
+    let avgLongitude;
     if (userList[0] != null) {
-      var totalLatitude = 0;
-      var totalLongitude = 0;
+      let totalLatitude = 0;
+      let totalLongitude = 0;
       userList.map((marker, index) => {
         totalLatitude += marker.latitude;
         totalLongitude += marker.longitude;
