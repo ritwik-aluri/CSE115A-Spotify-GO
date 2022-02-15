@@ -63,12 +63,18 @@ function HomeScreen({navigation}){
             longitudeDelta: 0.0121,
           }}
           showsUserLocation={true}>
-          <Marker
-            coordinate={{latitude: 37.78825, longitude: -122.4324}}
-            pinColor={'darkgrey'}
-            title={userList[0].id}
-            description={userList[0].title}
-          />
+          {userList[0] != null && userList.map((marker, index) => (
+              <MapView.Marker
+                  key = {index}
+                  coordinate = {{
+                      latitude: marker.latitude,
+                      longitude: marker.longitude
+                  }}
+                  title = {marker.id}
+                  description={marker.title}
+              />
+            ))
+          }
         </MapView>
     );
   

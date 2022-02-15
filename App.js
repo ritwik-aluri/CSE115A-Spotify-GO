@@ -34,8 +34,8 @@ export default function App() {
     music: "Second Chance",
     premium: true,
     sharing: true,
-    latitude: 20,
-    longitude: 100
+    latitude: 37.78835,
+    longitude: -122.4314
   });
 
   // Populates the nearby user list from the Users table
