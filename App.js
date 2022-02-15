@@ -54,6 +54,7 @@ export default function App() {
       })
     })
   };
+  userList.length = 0;
   populateList();
 
   return (

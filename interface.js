@@ -50,15 +50,26 @@ function HomeScreen({navigation}){
       );
     };
   
-    
+    var avgLatitude;
+    var avgLongitude;
+    if (userList[0] != null) {
+      var totalLatitude = 0;
+      var totalLongitude = 0;
+      userList.map((marker, index) => {
+        totalLatitude += marker.latitude;
+        totalLongitude += marker.longitude;
+      })
+      avgLatitude = totalLatitude / userList.length;
+      avgLongitude = totalLongitude / userList.length;
+    }
     const mapView = ( // Map Display
       <MapView
           provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
           style={styles.map}
           customMapStyle={darkMap}
           region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: avgLatitude,
+            longitude: avgLongitude,
             latitudeDelta: 0.0005,
             longitudeDelta: 0.003,
           }}
@@ -66,13 +77,13 @@ function HomeScreen({navigation}){
           {userList[0] != null && userList.map((marker, index) => (
               <MapView.Marker
                   key = {index}
-                  pinColor={'grey'}
+                  pinColor={'navy'}
                   coordinate = {{
                       latitude: marker.latitude,
                       longitude: marker.longitude
                   }}
                   title = {marker.id}
-                  description={marker.title}
+                  description={"Current Song: " + marker.title}
               />
             ))
           }
