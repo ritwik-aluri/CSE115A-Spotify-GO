@@ -50,6 +50,7 @@ function HomeScreen({navigation}){
       );
     };
   
+    
     const mapView = ( // Map Display
       <MapView
           provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
@@ -65,8 +66,8 @@ function HomeScreen({navigation}){
           <Marker
             coordinate={{latitude: 37.78825, longitude: -122.4324}}
             pinColor={'darkgrey'}
-            title={'Test'}
-            description={'Test Desc.'}
+            title={userList[0].id}
+            description={userList[0].title}
           />
         </MapView>
     );
