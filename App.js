@@ -6,10 +6,13 @@ import 'firebase/compat/firestore';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export { userList };
+export { longitude, latitude };
 import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
+import GetLocation from 'react-native-get-location';
 
 let userList = [];
-
+let longitude;
+let latitude;
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +31,19 @@ export default function App() {
   };
   firebase.initializeApp(config);
   const db = getDatabase();
+
+  GetLocation.getCurrentPosition({
+    enableHighAccuracy: true,
+    timeout: 15000,
+  })
+  .then(location => {
+    longitude = location.longitude;
+    latitude = location.latitude;
+  })
+  .catch(error => {
+    const { code, message } = error;
+    console.warn(code, message);
+  })
 
   // This is a new push to the database, completely testing.
   set(ref(db, 'users/' + "Guy"), {

@@ -19,7 +19,7 @@ import Icon_Entypo from 'react-native-vector-icons/Entypo';
 import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
-
+import {longitude, latitude} from "./App.js";
 
 var token_data;
 authHandler.onLogin().then((result) => { token_data = result; console.log("token set"); });
@@ -49,20 +49,21 @@ function HomeScreen({navigation}){
         />
       );
     };
-  
+
     const mapView = ( // Map Display
       <MapView
           provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
           style={styles.map}
           customMapStyle={darkMap}
           region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: latitude, // 0 for testing purposes, then change to 'latitude'
+            longitude: longitude, // 0 for testing purposes, then change to 'longitude'
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
           showsUserLocation={true}>
           <Marker
+            // TODO: set latitude and longitude of marker to be same as center of map region, currently bricks emulator
             coordinate={{latitude: 37.78825, longitude: -122.4324}}
             pinColor={'darkgrey'}
             title={'Test'}
