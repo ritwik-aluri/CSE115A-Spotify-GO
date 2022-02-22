@@ -74,13 +74,19 @@ function HomeScreen({navigation}){
             longitudeDelta: 0.0121,
           }}
           showsUserLocation={true}>
-          <Marker
-            // TODO: set latitude and longitude of marker to be same as center of map region, currently bricks emulator
-            coordinate={{latitude: 37.78825, longitude: -122.4324}}
-            pinColor={'darkgrey'}
-            title={'Test'}
-            description={'Test Desc.'}
-          />
+          {userList[0] != null && userList.map((marker, index) => (
+              <MapView.Marker
+                  key = {index}
+                  pinColor={'navy'}
+                  coordinate = {{
+                      latitude: marker.latitude,
+                      longitude: marker.longitude
+                  }}
+                  title = {marker.id}
+                  description={"Current Song: " + marker.title}
+              />
+            ))
+          }
         </MapView>
     );
   
