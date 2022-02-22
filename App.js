@@ -50,8 +50,8 @@ export default function App() {
     music: "Second Chance",
     premium: true,
     sharing: true,
-    latitude: 20,
-    longitude: 100
+    latitude: 37.78835,
+    longitude: -122.4314
   });
 
   // Populates the nearby user list from the Users table
@@ -62,6 +62,7 @@ export default function App() {
         userList.push({
           id: child.key,
           title: child.val().music,
+          artist: 'N/A',
           premium: child.val().premium,
           sharing: child.val().sharing,
           latitude: child.val().latitude,
@@ -70,12 +71,14 @@ export default function App() {
       })
     })
   };
+
+  userList.length = 0;
   populateList();
 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{
-    headerShown: false
+    headerShown: false, animation: "none",
       }}>
         <Stack.Screen name = "Home" component={HomeScreen}/>
         <Stack.Screen name = "Profile" component={ProfileScreen}/>
