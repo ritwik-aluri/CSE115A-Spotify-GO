@@ -81,6 +81,8 @@ function HomeScreen({navigation}){
           style={styles.map}
           customMapStyle={darkMap}
           region={{
+            // latitude: 37.78835,
+            // longitude: -122.4314,
             latitude: avg_latitude,
             longitude: avg_longitude,
             latitudeDelta: 0.0005,
