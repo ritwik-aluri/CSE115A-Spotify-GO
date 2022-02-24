@@ -8,13 +8,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export { userList };
 import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
 
+import initAppAndGetDB from './DBConfig';
+import SpotifyToDB from './android/app/src/spotify_auth/spotifyToDB';
+import DBInterface from './android/app/src/spotify_auth/DBInterface';
+
 let userList = [];
 
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  let config = {
+  /*let config = {
     apiKey: "AIzaSyBBogvZGpzfWJeUeloFvvH2xguSyMnmPJA",
     authDomain: "spotify-go-ba7bf.firebaseapp.com",
     // The value of `databaseURL` depends on the location of the database
@@ -27,7 +31,34 @@ export default function App() {
     measurementId: "G-MEASUREMENT_ID",
   };
   firebase.initializeApp(config);
-  const db = getDatabase();
+  const db = getDatabase();*/
+  const db = initAppAndGetDB();
+  console.log("Starting test to create and get sample user");
+  const SpotifyToDBInterface = new SpotifyToDB(db);
+  SpotifyToDBInterface.initUser("DBsample", "Bubbles", "PLACEHOLDER", false, false, 4, 5, false);
+  console.log("User initialized");
+  SpotifyToDBInterface.updateSong("DBsample", "test1song");
+  //SpotifyToDBInterface.updateLocation("DBsample", "test2lat", "test3long");
+  SpotifyToDBInterface.updateLocation("DBsample", 2, 3);
+  SpotifyToDBInterface.updatePlaybackState("DBsample", "test4playback");
+  console.log("Update functions called using SpotifyToDB");
+  SpotifyToDBInterface.updateSong("DBsample", "test5songagain");
+  SpotifyToDBInterface.updateLocation("DBsample");
+  SpotifyToDBInterface.updatePlaybackState("DBsample");
+  console.log("Update functions called using SpotifyToDB again; nothing should change but song");
+  //const userRef = ref(db, 'users/');
+  console.log("Starting test to create DB interface");
+  const DBInterfaceInstance = new DBInterface(db);
+  console.log("Getting nearby users");
+  //let nearbyUsers;
+  //DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { nearbyUsers = output; console.log(output); });
+  let nearbyUsers;
+  DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { nearbyUsers = output; console.log("Printing nearbyUsers:"); console.log(nearbyUsers); });
+  //console.log(nearbyUsers);
+  console.log("Printing nearby users above! Or below!");
+  //console.log(nearbyUsers);
+  //console.log("Success! :D");
+  //////////
 
   // This is a new push to the database, completely testing.
   set(ref(db, 'users/' + "Guy"), {
@@ -55,7 +86,9 @@ export default function App() {
     })
   };
   populateList();
-
+  //////64 blank
+  const users = ref(db, 'users/')
+  ///////////
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{
