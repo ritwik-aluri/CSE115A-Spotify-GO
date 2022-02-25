@@ -17,6 +17,8 @@ let userList = [];
 
 const Stack = createNativeStackNavigator();
 
+let nearbyUsers, nearbyUsers2;
+export { nearbyUsers, nearbyUsers2 };
 export default function App() {
   /*let config = {
     apiKey: "AIzaSyBBogvZGpzfWJeUeloFvvH2xguSyMnmPJA",
@@ -52,12 +54,14 @@ export default function App() {
   console.log("Getting nearby users");
   //let nearbyUsers;
   //DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { nearbyUsers = output; console.log(output); });
-  let nearbyUsers;
+  //let nearbyUsers;
   DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { nearbyUsers = output; console.log("Printing nearbyUsers:"); console.log(nearbyUsers); });
+  nearbyUsers2 = 0; //await DBInterfaceInstance.getNearbyUsers("DBsample");  // Doesn't work; await requires using function to be async
   //console.log(nearbyUsers);
-  console.log("Printing nearby users above! Or below!");
+  //console.log("Printing nearby users above! Or below!");
   //console.log(nearbyUsers);
   //console.log("Success! :D");
+  //console.log("Printing nearby users below! Waiting on nearbyUsers to not be undefined!");
   //////////
 
   // This is a new push to the database, completely testing.
