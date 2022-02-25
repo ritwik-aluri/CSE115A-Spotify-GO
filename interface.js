@@ -19,7 +19,7 @@ import Icon_Entypo from 'react-native-vector-icons/Entypo';
 import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
-import { nearbyUsers, nearbyUsers2 } from "./App";
+import { nearbyUsers } from "./App";
 
 
 var token_data;
@@ -160,7 +160,7 @@ function HomeScreen({navigation}){
         <View style = {{width: 90}}/>
         <TouchableOpacity activeOpacity='1' style={[styles.button]} onPress={() => navigation.navigate('Profile')}>
           <View style = {{marginTop: 'auto', marginBottom: 'auto', marginBottom: '10%'}}>
-            <Text style={[styles.buttonText]} onPress={() => { console.log(token_data); Spotify.getCurrSong(token_data["accessToken"]); Spotify.getCurrUserInfo(token_data["accessToken"]); Spotify.getPlaybackState(token_data["accessToken"]); /*Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])*/ /*Promise.resolve(nearbyUsers);*/ console.log("nearbyUsers 1: "); console.log(nearbyUsers); console.log("nearbyUsers 2: "); console.log(nearbyUsers2); }}>test button</Text>
+            <Text style={[styles.buttonText]} onPress={() => { console.log(token_data); Spotify.getCurrSong(token_data["accessToken"]); Spotify.getCurrUserInfo(token_data["accessToken"]); Spotify.getPlaybackState(token_data["accessToken"]); /*Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])*/ console.log("nearbyUsers: "); console.log(nearbyUsers); }}>test button</Text>
             <Text style = {[styles.buttonText]}>Profile</Text>
           </View>
         </TouchableOpacity>
