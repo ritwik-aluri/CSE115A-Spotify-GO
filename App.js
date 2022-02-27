@@ -8,24 +8,21 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export { userList };
 import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
 
-import initAppAndGetDB from './DBConfig';
-import SpotifyToDB from './android/app/src/spotify_auth/spotifyToDB';
-import DBInterface from './android/app/src/spotify_auth/DBInterface';
+import initAppAndGetDB from './android/app/src/database/DBConfig';
+import DBInterface from './android/app/src/database/DBInterface';
 
 let userList = [];
 
 
 const Stack = createNativeStackNavigator();
 
-let nearbyUsers, nearbyUsers2;
-export { nearbyUsers, nearbyUsers2 };
+let nearbyUsers;
+export { nearbyUsers };
 export default function App() {
   const db = initAppAndGetDB();
-  const SpotifyToDBInterface = new SpotifyToDB(db);
   const DBInterfaceInstance = new DBInterface(db);
   console.log("Getting nearby users");
   DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { nearbyUsers = output; console.log("Printing nearbyUsers:"); console.log(nearbyUsers); });
-  nearbyUsers2 = 0; //await DBInterfaceInstance.getNearbyUsers("DBsample");  // Doesn't work; await requires using function to be async
   //////////
 
   // This is a new push to the database, completely testing.
