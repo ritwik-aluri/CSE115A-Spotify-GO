@@ -74,18 +74,22 @@ function HomeScreen({navigation}){
             longitudeDelta: 0.0121,
           }}
           showsUserLocation={true}>
-          {userList[0] != null && userList.map((marker, index) => (
-              <MapView.Marker
-                  key = {index}
-                  pinColor={'navy'}
-                  coordinate = {{
-                      latitude: marker.latitude,
-                      longitude: marker.longitude
-                  }}
-                  title = {marker.id}
-                  description={"Current Song: " + marker.title}
-              />
-            ))
+          {userList[0] != null && userList.map((marker, index) => {
+            if (marker.latitude != null && marker.longitude != null) {
+              return (
+                <MapView.Marker
+                    key = {index}
+                    pinColor={'navy'}
+                    coordinate = {{
+                        latitude: marker.latitude,
+                        longitude: marker.longitude
+                    }}
+                    title = {marker.id}
+                    description={"Current Song: " + marker.title}
+                />
+              )
+            }
+            })
           }
         </MapView>
     );
