@@ -1,20 +1,14 @@
 import {
-    child,
     DataSnapshot,
-    endAt,
-    get,
-    orderByChild,
-    query,
     ref,
-    set,
-    startAt,
-    update
+    set, update,
+    get, query, child, orderByChild, startAt, endAt
 } from "firebase/database";
 
 // These could be passed as parameters to getNearbyUsers()
 RADIUS = 100;
 MAXNEARBYUSERS = 100;
-// Firebase doesn't store values of null
+// Firebase doesn't store values of null, so these are used for placeholder values instead
 PLACEHOLDER_STRING = "-1";
 PLACEHOLDER_VALUE = -1;
 
@@ -100,23 +94,19 @@ class DBInterface {
         let longQueryResult = await get(query(usersRef, orderByChild("coordinates/longitude"),
                                               startAt(longVal.val() - RADIUS),
                                               endAt(longVal.val() + RADIUS)));
-        console.log(longQueryResult);
         // Filter by latitude manually
         let output = [];
         let childKey, childData;
         longQueryResult.forEach((childSnapshot) => {
             childKey = childSnapshot.key;
             childData = childSnapshot.val();
-            console.log(childKey);
-            console.log(curUserID);
-            console.log();
             if (childKey !== curUserID &&
                 childData.coordinates.latitude >= latVal.val() - RADIUS &&
                 childData.coordinates.latitude <= latVal.val() + RADIUS) {
                 output.push(childSnapshot);
             }
         });
-        // Shuffle output and return first MAXNEARBYUSERS to put in "nearby users" list
+        // Shuffle output and return first MAXNEARBYUSERS to put in "nearby users" list.
         // Shuffle algorithm source: Accepted answer at
         // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
         // *** Start cited portion ***
