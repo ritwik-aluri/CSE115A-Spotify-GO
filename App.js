@@ -9,6 +9,8 @@ export { userList };
 export { longitude, latitude };
 import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
 import GetLocation from 'react-native-get-location';
+import initAppAndGetDB from './android/app/src/database/DBConfig';
+import DBInterface from './android/app/src/database/DBInterface';
 
 let userList = [];
 let longitude;
@@ -17,20 +19,9 @@ let latitude;
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  let config = {
-    apiKey: "AIzaSyBBogvZGpzfWJeUeloFvvH2xguSyMnmPJA",
-    authDomain: "spotify-go-ba7bf.firebaseapp.com",
-    // The value of `databaseURL` depends on the location of the database
-    databaseURL: "https://spotify-go-ba7bf-default-rtdb.firebaseio.com",
-    projectId: "spotify-go-ba7bf",
-    storageBucket: "spotify-go-ba7bf.appspot.com",
-    // messagingSenderId: "SENDER_ID",
-    appId: "1:445520680219:android:f2b7a5d240013fe1dc2fbe",
-    // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
-    measurementId: "G-MEASUREMENT_ID",
-  };
-  firebase.initializeApp(config);
-  const db = getDatabase();
+  const db = initAppAndGetDB();
+  const DBInterfaceInstance = new DBInterface(db);
+  DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { userList = output; });
 
   GetLocation.getCurrentPosition({
     enableHighAccuracy: true,
@@ -45,6 +36,18 @@ export default function App() {
     console.warn(code, message);
   })
 
+  // Use the DBInterface class instance to init users, update the database, and get nearby users
+  // from now on! :)
+  // The class is here: android/app/src/database/DBInterface.js
+  // Also, note that each user in the outputted list of DBInterfaceInstance.getNearbyUsers() can be
+  // treated as an object and their fields' data obtained with dot notation! All users are assumed
+  // to be structured as the "DBsample" user is.
+  // The last thing to note is that the parameter to getNearbyUsers() is supposed to be the current
+  // user's Spotify auth key, used to index the users in the database (as an example, Gabe's is
+  // already in there). So, Gabe, uh, replace that parameter that I've hardcoded to "DBsample" with
+  // your thing above.
+  //   - Ritwik
+  /*
   // This is a new push to the database, completely testing.
   set(ref(db, 'users/' + "Guy"), {
     music: "Second Chance",
@@ -74,6 +77,7 @@ export default function App() {
 
   userList.length = 0;
   populateList();
+  */
 
   return (
     <NavigationContainer>
