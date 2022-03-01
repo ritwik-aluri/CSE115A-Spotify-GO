@@ -180,105 +180,7 @@ function HomeScreen({navigation}){
       }}/>
     </View>
   );
-  
-  const bottomNagivationButtons = ( // Bottom bar button navigation
-    <View style={{
-      position: 'absolute',
-      bottom: 30,
-      width: '100%',
-      zIndex: 1
-    }}>
-      <View style={{ // Spacing Buttons
-        justifyContent: 'space-evenly',
-        flexDirection: 'row', 
-      }}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.button]}
-          onPress={handleResync}
-        >
-          <View style={[styles.centering]}>
-            <Icon_EvilIcons
-              name='refresh'
-              color='white'
-              size={40}
-            />
-          </View>
-          <View style={{marginBottom: '10%'}}>
-            <Text style = {[styles.buttonText]}>
-              Resync
-            </Text>
-            </View>
-        </TouchableOpacity>
-  
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.button]}
-          onPress={() => setHidden(hidden = false)}
-        >
-          <View style={[styles.centering]}>
-            <Icon_Entypo
-              name='list'
-              color='white'
-              size={34}
-              style={{marginLeft: 'auto',
-                      marginRight: 'auto'}}
-            />
-          </View>
-          <View style={{marginBottom: '10%'}}>
-            <Text style = {[styles.buttonText]}>
-              Nearby
-            </Text>
-          </View>
-        </TouchableOpacity>
 
-        <View style = {{width: 90}}/>
-
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.button]}
-          onPress={() => handleSongTest()}
-        >
-          <View style={[styles.centering]}>
-            <Text style={[styles.buttonText]}>
-              Test Button
-            </Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.button]}
-          onPress={() => navigation.navigate('Settings')}
-        >
-          <View style={[styles.centering]}>
-            <Icon_EvilIcons 
-              name='gear'
-              color='white'
-              size={33}
-            />
-          </View>
-          <View style={{marginBottom: '10%'}}>
-            <Text style={[styles.buttonText]}>
-              Settings
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-  
-  const profileButton = (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      style={[styles.profileButton]}
-      onPress={() => navigation.navigate('Profile')}
-    >
-      <View style={[styles.profileButtonInner]}/>
-    </TouchableOpacity>
-  );
-  
- // Template menu
   const musicMenu = (
   <View style={[styles.musicMenu, {position: 'absolute'}]}>
     <TouchableOpacity
@@ -306,200 +208,225 @@ function HomeScreen({navigation}){
   </View>
   );
 
+  const listMenu = (
+    <View style={[styles.collapsedMenu]}>
+      <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
+        <View style={{
+          width: 60,
+          height: 60,
+          left: 5,
+          backgroundColor: 'rgba(10,120,50,100)',
+          borderRadius: 5,
+          shadowOpacity: 0.75,
+          shadowRadius: 5,
+          elevation: 4
+          }}
+        />
+        <View style={{flexDirection: 'column',
+                      justifyContent: 'center',
+                      left: 12}}
+        >
+          <Text style={{color: 'white'}}>
+            N/A
+          </Text>
+          <Text style={{color: 'grey'}}>
+            N/A
+          </Text>
+          <Text style={{color: 'grey'}}>
+            User: N/A
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       {mapView}
       {bottomNagivationBackground}
       {searchBar}
       {rightSideButtons}
-      {bottomNagivationButtons}
-      {profileButton}
-      { !hidden && (musicMenu) }
-      { hidden && (
-        <View style={[styles.collapsedMenu]}>
-          <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
-            <View style={{
-              width: 60,
-              height: 60,
-              left: 5,
-              backgroundColor: 'rgba(10,120,50,100)',
-              borderRadius: 5,
-              shadowOpacity: 0.75,
-              shadowRadius: 5,
-              elevation: 4
-              }}
-            />
-            <View style={{flexDirection: 'column',
-                          justifyContent: 'center',
-                          left: 12}}
-            >
-              <Text style={{color: 'white'}}>
-                N/A
-              </Text>
-              <Text style={{color: 'grey'}}>
-                N/A
-              </Text>
-              <Text style={{color: 'grey'}}>
-                User: N/A
-              </Text>
-            </View>
-          </View>
-        </View>
+      {bottomNagivationButtons(
+        handleResync,
+        "Resync",
+        () => setHidden(hidden = false),
+        "Nearby",
+        () => handleSongTest(),
+        "Test Button",
+        () => navigation.navigate('Settings'),
+        "Settings"
       )}
+      {profileButton(() => navigation.navigate('Profile'))}
+      { !hidden && (musicMenu) }
+      { hidden && (listMenu) }
     </View>
   );
 };
   
 function ProfileScreen({navigation}){
-  let [hidden, setHidden] = React.useState(true);
-  const bottomNagivationButtons = (
-    <View style = {{ // Bottom bar button navigation
-      position: 'absolute',
-      bottom: 30,
-      width: '100%',
-      zIndex: 1
-    }}>
-      <View style = {{ // Spacing Buttons
-        justifyContent: 'space-evenly',
-        flexDirection: 'row',
-      }}>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button]}>
-        <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'refresh' type = 'EvilIcons' color = 'white' size = {40}/> */}
-            <Text style = {[styles.buttonText]}>Resync</Text>
-          </View>
-        </TouchableOpacity>
-  
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button]} onPress = {() => setHidden(hidden = false)}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'list' type = 'entypo' color = 'white' size = {34}/> */}
-            <Text style = {[styles.buttonText]} >Nearby</Text>
-          </View>
-          {/* <View style = {{height: 8}}/> */}
-        </TouchableOpacity>
-        <View style = {{width: 90}}/>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button]} onPress={() => navigation.navigate('Profile')}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
-            {/* <View style = {{height: 2}}/> */}
-            <Text style = {[styles.buttonText]}>Profile</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button]} onPress={() => navigation.navigate('Settings')}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
-            {/* <View style = {{height: 2}}/> */}
-            <Text style = {[styles.buttonText]}>Settings</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+  const profileHeader = (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
+      <Text style = {{fontSize: 40, fontWeight: "bold"}}>
+        Profile
+      </Text>
     </View>
-  )
-  const profileButton = (
-    <TouchableOpacity activeOpacity={0.5} style = {{ // Profile button
-      position: 'absolute',
-      alignSelf: 'center',
-      backgroundColor: 'rgba(60,60,60,255)',
-      shadowOpacity: 1,
-      shadowRadius: 10,
-      width: 85,
-      height: 85,
-      borderRadius: 50,
-      bottom: 20,
-      zIndex: 10,
-      opacity: 0.95
-    }} onPress={() => navigation.navigate('Profile')}>
-      <View style = {[styles.profileButtonInner]} />
-     </TouchableOpacity>
-  )
-  const profileHeader = (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
-  <Text style = {{fontSize: 40, fontWeight: "bold"}}>Profile</Text>
-  </View>)
-  const profileText = (<View style={{ flex: 3, justifyContent: 'flex-start' }}>
-  <Text style = {{fontSize: 20}}>Username: </Text>
-  <Text>{"\n"}</Text>
-  <Text style = {{fontSize:20}}>Current Song Playing:</Text>
-</View>)
+  );
+
+  const profileText = (
+    <View style={{ flex: 3, justifyContent: 'flex-start' }}>
+      <Text style = {{fontSize: 20}}>
+        Username:
+      </Text>
+      <Text>
+        {"\n"}
+      </Text>
+      <Text style={{fontSize:20}}>
+        Current Song Playing:
+      </Text>
+    </View>
+    );
+
   return (
     <View style={styles.container}>
       {profileHeader}
       {profileText}
-      {bottomNagivationButtons}
-      {profileButton}
+      {bottomNagivationButtons(
+        () => ("NULL"),
+        "Resync",
+        () => ("NULL"),
+        "Nearby",
+        () => navigation.navigate('Profile'),
+        "Test Button",
+        () => navigation.navigate('Settings'),
+        "Settings"
+      )}
+      {profileButton(() => navigation.navigate('Profile'))}
     </View>
   );
 };
 
 function SettingsScreen({navigation}){
-  let [hidden, setHidden] = React.useState(true);
-  const bottomNagivationButtons = (
-    <View style = {{ // Bottom bar button navigation
-      position: 'absolute',
-      bottom: 30,
-      width: '100%',
-      zIndex: 1
-    }}>
-      <View style = {{ // Spacing Buttons
-        justifyContent: 'space-evenly',
-        flexDirection: 'row',
-      }}>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button]}>
-        <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'refresh' type = 'EvilIcons' color = 'white' size = {40}/> */}
-            <Text style = {[styles.buttonText]}>Resync</Text>
-          </View>
-        </TouchableOpacity>
-  
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button]} onPress = {() => setHidden(hidden = false)}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'list' type = 'entypo' color = 'white' size = {34}/> */}
-            <Text style = {[styles.buttonText]} >Nearby</Text>
-          </View>
-          {/* <View style = {{height: 8}}/> */}
-        </TouchableOpacity>
-        <View style = {{width: 90}}/>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button]}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
-            {/* <View style = {{height: 2}}/> */}
-            <Text style = {[styles.buttonText]}>Profile</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.button]}>
-          <View style = {{marginTop: 'auto', marginBottom: 'auto'}}>
-            {/* <Icon name = 'gear' type = 'evilicon' color = 'white' size = {33}/> */}
-            {/* <View style = {{height: 2}}/> */}
-            <Text style = {[styles.buttonText]}>Settings</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+  const settingsText = (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>
+        Settings Screen
+      </Text>
     </View>
-  )
-  const profileButton = (
-    <TouchableOpacity activeOpacity={0.5} style = {{ // Profile button
-      position: 'absolute',
-      alignSelf: 'center',
-      backgroundColor: 'rgba(60,60,60,255)',
-      shadowOpacity: 1,
-      shadowRadius: 10,
-      width: 85,
-      height: 85,
-      borderRadius: 50,
-      bottom: 20,
-      zIndex: 10,
-      opacity: 0.95
-    }} onPress={() => navigation.navigate('Profile')}>
-      <View style = {[styles.profileButtonInner]} />
-     </TouchableOpacity>
-  )
-  const settingsText = (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-  <Text>Settings Screen</Text>
-</View>)
+  );
+  
   return (
     <View style={styles.container}>
       {settingsText}
-      {bottomNagivationButtons}
-      {profileButton}
+      {bottomNagivationButtons(
+        () => ("NULL"),
+        "Resync",
+        () => ("NULL"),
+        "Nearby",
+        () => navigation.navigate('Profile'),
+        "Test Button",
+        () => navigation.navigate('Settings'),
+        "Settings"
+      )}
+      {profileButton(() => navigation.navigate('Profile'))}
     </View>
   );
 };
+
+
+// Bottom bar button navigation
+const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight, midRightText, right, rightText) => (
+  <View style={{
+    position: 'absolute',
+    bottom: 30,
+    width: '100%',
+    zIndex: 1
+  }}>
+    <View style={{ // Spacing Buttons
+      justifyContent: 'space-evenly',
+      flexDirection: 'row', 
+    }}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={[styles.button]}
+        onPress={left}
+      >
+        <View style={[styles.centering]}>
+          <Icon_EvilIcons
+            name='refresh'
+            color='white'
+            size={40}
+          />
+        </View>
+        <View style={{marginBottom: '10%'}}>
+          <Text style = {[styles.buttonText]}>
+            {leftText}
+          </Text>
+          </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={[styles.button]}
+        onPress={midLeft}
+      >
+        <View style={[styles.centering]}>
+          <Icon_Entypo
+            name='list'
+            color='white'
+            size={34}
+            style={{marginLeft: 'auto',
+                    marginRight: 'auto'}}
+          />
+        </View>
+        <View style={{marginBottom: '10%'}}>
+          <Text style = {[styles.buttonText]}>
+            {midLeftText}
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      <View style = {{width: 90}}/>
+
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={[styles.button]}
+        onPress={midRight}
+      >
+        <View style={[styles.centering]}>
+          <Text style={[styles.buttonText]}>
+            {midRightText}
+          </Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={[styles.button]}
+        onPress={right}
+      >
+        <View style={[styles.centering]}>
+          <Icon_EvilIcons 
+            name='gear'
+            color='white'
+            size={33}
+          />
+        </View>
+        <View style={{marginBottom: '10%'}}>
+          <Text style={[styles.buttonText]}>
+            {rightText}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+
+const profileButton = (press) => (
+  <TouchableOpacity
+    activeOpacity={0.5}
+    style={[styles.profileButton]}
+    onPress={press}
+  >
+    <View style={[styles.profileButtonInner]}/>
+  </TouchableOpacity>
+);
