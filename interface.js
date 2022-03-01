@@ -76,8 +76,8 @@ function HomeScreen({navigation}){
   let [currLongitude, setLongitude] = React.useState(0);
 
   const handleResync = () => {
-    setLatitude(currLatitude = 37.78847);
-    setLongitude(currLongitude = -122.4322);
+    setLatitude(currLatitude = latitude);
+    setLongitude(currLongitude = longitude);
   }
 
   const handleSongTest = () => {
