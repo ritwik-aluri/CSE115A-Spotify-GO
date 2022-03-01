@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import {
     SafeAreaView,
@@ -76,8 +76,8 @@ function HomeScreen({navigation}){
   let [currLongitude, setLongitude] = React.useState(0);
 
   const handleResync = () => {
-    setLatitude(currLatitude = latitude);
-    setLongitude(currLongitude = longitude);
+    setLatitude(currLatitude = 37.78847);
+    setLongitude(currLongitude = -122.4322);
   }
 
   const handleSongTest = () => {
@@ -111,7 +111,36 @@ function HomeScreen({navigation}){
               }}
               title={marker.id}
               description={"Current Song: " + marker.title}
-            />
+            >
+              <View style={[styles.markerCircle]}>
+                <View style={[styles.markerInner]}></View>
+              </View>
+              <Callout tooltip>
+                <View>
+                  <View style={[styles.calloutMenu]}>
+                    <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
+                      <View style={[styles.templateEntry]}
+                      />
+                      <View style={{flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    left: 12}}
+                      >
+                        <Text style={{color: 'white'}}>
+                          {marker.title}
+                        </Text>
+                        <Text style={{color: 'grey'}}>
+                          N/A
+                        </Text>
+                        <Text style={{color: 'grey'}}>
+                          User: {marker.id}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={[styles.calloutPointer]}></View>
+                </View>
+              </Callout>
+            </MapView.Marker>
           );
         }
       })}
@@ -208,20 +237,10 @@ function HomeScreen({navigation}){
   </View>
   );
 
-  const listMenu = (
+  const collapsedMenu = (
     <View style={[styles.collapsedMenu]}>
       <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
-        <View style={{
-          width: 60,
-          height: 60,
-          left: 5,
-          backgroundColor: 'rgba(10,120,50,100)',
-          borderRadius: 5,
-          shadowOpacity: 0.75,
-          shadowRadius: 5,
-          elevation: 4
-          }}
-        />
+        <View style={[styles.templateEntry]}/>
         <View style={{flexDirection: 'column',
                       justifyContent: 'center',
                       left: 12}}
@@ -258,7 +277,7 @@ function HomeScreen({navigation}){
       )}
       {profileButton(() => navigation.navigate('Profile'))}
       { !hidden && (musicMenu) }
-      { hidden && (listMenu) }
+      { hidden && (collapsedMenu) }
     </View>
   );
 };
