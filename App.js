@@ -13,15 +13,31 @@ import initAppAndGetDB from './android/app/src/database/DBConfig';
 import DBInterface from './android/app/src/database/DBInterface';
 
 let userList = [];
-let longitude;
-let latitude;
+let longitude = 0;
+let latitude = 0;
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  /*let config = {
+    apiKey: "AIzaSyBBogvZGpzfWJeUeloFvvH2xguSyMnmPJA",
+    authDomain: "spotify-go-ba7bf.firebaseapp.com",
+    // The value of `databaseURL` depends on the location of the database
+    databaseURL: "https://spotify-go-ba7bf-default-rtdb.firebaseio.com",
+    projectId: "spotify-go-ba7bf",
+    storageBucket: "spotify-go-ba7bf.appspot.com",
+    // messagingSenderId: "SENDER_ID",
+    appId: "1:445520680219:android:f2b7a5d240013fe1dc2fbe",
+    // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
+    measurementId: "G-MEASUREMENT_ID",
+  };
+  firebase.initializeApp(config);
+  const db = getDatabase();*/
   const db = initAppAndGetDB();
   const DBInterfaceInstance = new DBInterface(db);
-  DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { userList = output; });
+  DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { userList = output; console.log(output); }).catch(function(error) {
+                                                                                                                  console.log('There has been a problem with your fetch operation: ' + error.message);
+                                                                                                                  });;
 
   GetLocation.getCurrentPosition({
     enableHighAccuracy: true,
@@ -47,7 +63,7 @@ export default function App() {
   // already in there). So, Gabe, uh, replace that parameter that I've hardcoded to "DBsample" with
   // your thing above.
   //   - Ritwik
-  /*
+
   // This is a new push to the database, completely testing.
   set(ref(db, 'users/' + "Guy"), {
     music: "Second Chance",
@@ -77,7 +93,10 @@ export default function App() {
 
   userList.length = 0;
   populateList();
-  */
+
+  console.log("Printing userList at bottom of App() function: ")
+  console.log(userList);
+
 
   return (
     <NavigationContainer>
