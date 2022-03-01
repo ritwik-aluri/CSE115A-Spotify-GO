@@ -12,6 +12,7 @@ import {
     TouchableOpacity,
     FlatList,
     Dimensions,
+    Switch,
   } from 'react-native';
 import { styles } from './interfaceStyle.js';
 import { darkMap } from './mapStyle.js';
@@ -23,10 +24,15 @@ import {longitude, latitude} from "./App.js";
 
 let token_data;
 authHandler.onLogin().then((result) => { token_data = result; console.log("token set"); });
-
+let profileInfo = "Username: \nCurrent Song Playing:";
+let username = "john23541";
+let currSong = "Stuck in the Abyss";
 
 export { HomeScreen, ProfileScreen, SettingsScreen };
 import { userList } from './App.js';
+let toggleSwitch;
+
+
 
 function HomeScreen({navigation}){
   let [text, onChangeText] = React.useState("Search ...");
@@ -78,12 +84,15 @@ function HomeScreen({navigation}){
   const handleResync = () => {
     setLatitude(currLatitude = latitude);
     setLongitude(currLongitude = longitude);
+    profileInfo = "Username: " + username + "\nCurrent Song Playing: " + currSong;
   }
 
   const handleSongTest = () => {
     console.log(token_data);
-    Spotify.getCurrSong(token_data["accessToken"]);
-    Spotify.getCurrUserInfo(token_data["accessToken"]);
+    Spotify.getCurrSong(token_data["accessToken"]).then((data) => {console.log(data); currSong = data.item.name;});
+    Spotify.getCurrUserInfo(token_data["accessToken"]).then((userdata) => {console.log(userdata); username = userdata.display_name;});
+
+    
     /*Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])*/ 
   }
 
@@ -293,20 +302,20 @@ function ProfileScreen({navigation}){
 
   const profileText = (
     <View style={{ flex: 3, justifyContent: 'flex-start' }}>
-      <Text style = {{fontSize: 20}}>
-        Username:
-      </Text>
-      <Text>
-        {"\n"}
-      </Text>
-      <Text style={{fontSize:20}}>
-        Current Song Playing:
-      </Text>
+      <Text style = {{fontSize: 20}}>{profileInfo}</Text>  
     </View>
+    );
+
+    const exitButton = (
+      <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
+        <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
+        <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
+      </TouchableOpacity>
     );
 
   return (
     <View style={styles.container}>
+      {exitButton}
       {profileHeader}
       {profileText}
       {bottomNagivationButtons(
@@ -325,16 +334,29 @@ function ProfileScreen({navigation}){
 };
 
 function SettingsScreen({navigation}){
-  const settingsText = (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>
-        Settings Screen
-      </Text>
-    </View>
-  );
+  const exitButton = (
+    <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
+      <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
+      <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
+    </TouchableOpacity>
+  )
+  const settingsHeader = (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
+    <Text style = {{fontSize: 40, fontWeight: "bold"}}>Settings</Text>
+  </View>)
+  const settingsText = (<View style={{ flex: 3, justifyContent: 'flex-start' }}>
+    <Text style = {{fontSize: 20}}>Remove consent to sharing data </Text>
+    <Switch
+      trackColor={{ false: "#767577", true: "#81b0ff" }}
+      thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+      onValueChange={toggleSwitch}
+      value={isEnabled}
+    />
+  </View>)
   
   return (
     <View style={styles.container}>
+      {exitButton}
+      {settingsHeader}
       {settingsText}
       {bottomNagivationButtons(
         () => ("NULL"),
