@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
       color: 'white',
     },
     musicMenu: {
-      // position: 'absolute',
       alignSelf: 'center',
       width: '95%',
       height: '80%',
@@ -77,6 +76,44 @@ const styles = StyleSheet.create({
       height: 70,
       borderRadius: 5,
       backgroundColor: 'rgba(45,45,45,255)',
+      opacity: 0.95,
+      shadowOpacity: 0.75,
+      shadowRadius: 5,
+      elevation: 1
+    },
+    templateEntry: {
+      width: 60,
+      height: 60,
+      left: 5,
+      backgroundColor: 'rgba(10,120,50,100)',
+      borderRadius: 5,
+      shadowOpacity: 0.75,
+      shadowRadius: 5,
+      elevation: 4
+    },
+    calloutMenu: {
+      width: 375,
+      height: 70,
+      borderRadius: 5,
+      backgroundColor: 'rgba(45,45,45,255)',
+      opacity: 0.95,
+      shadowOpacity: 0.75,
+      shadowRadius: 5,
+      elevation: 1
+    },
+    calloutPointer: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: 0,
+      height: 0,
+      borderLeftWidth: 10,
+      borderRightWidth: 10,
+      borderTopWidth: 20,
+      borderStyle: 'solid',
+      backgroundColor: 'transparent',
+      borderLeftColor: 'transparent',
+      borderRightColor: 'transparent',
+      borderTopColor: 'rgba(45,45,45,255)',
       opacity: 0.95,
       shadowOpacity: 0.75,
       shadowRadius: 5,
@@ -127,6 +164,23 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderRadius: 10,
       padding: 10,
+    },
+    markerCircle: {
+      width: 12,
+      height: 12,
+      borderRadius: 6,
+      backgroundColor: 'rgba(90,118,88,255)',
+    },
+    markerInner: {
+      position: 'relative',
+      marginTop: 'auto',
+      marginBottom: 'auto',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: 10,
+      height: 10,
+      borderRadius: 4, 
+      backgroundColor: 'rgba(74,203,79,255)'
     }
   });
   
