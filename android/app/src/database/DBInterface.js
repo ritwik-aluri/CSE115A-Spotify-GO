@@ -17,10 +17,6 @@ class DBInterface {
         this.db = database;
     }
 
-    /////////////////
-    // DO NOT PUSH NEW DATABASE STRUCTURE CHANGES UNTIL SURE THAT GABE DOESN'T ALREADY RETURN
-    // EVERYTHING WE NEED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    /////////////////
     initUser(userid, _name=PLACEHOLDER_STRING, _spotify_url=PLACEHOLDER_STRING,
              _premium=false, _sharing=false, _lat=PLACEHOLDER_VALUE,
              _long=PLACEHOLDER_VALUE, _playback=PLACEHOLDER_VALUE,
