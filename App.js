@@ -35,9 +35,14 @@ export default function App() {
   const db = getDatabase();*/
   const db = initAppAndGetDB();
   const DBInterfaceInstance = new DBInterface(db);
-  DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => { userList = output; console.log(output); }).catch(function(error) {
-                                                                                                                  console.log('There has been a problem with your fetch operation: ' + error.message);
-                                                                                                                  });;
+  DBInterfaceInstance.initUser("DBsample", "Sample", "Sample_URL", false, true, -1, -1, false,
+                               null, "id", "song_URL", "song_name", "artist", "art_URL");
+  DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => {
+    userList = output;
+    console.log(output);
+  }).catch(function(error) {
+    console.log('There has been a problem with your fetch operation: ' + error.message);
+  });
 
   GetLocation.getCurrentPosition({
     enableHighAccuracy: true,
