@@ -103,7 +103,7 @@ class DBInterface {
             if (childKey !== curUserID &&
                 childData.coordinates.latitude >= latVal.val() - RADIUS &&
                 childData.coordinates.latitude <= latVal.val() + RADIUS) {
-                output.push(childSnapshot);
+                output.push(childSnapshot.val());
             }
         });
         // Shuffle output and return first MAXNEARBYUSERS to put in "nearby users" list.
