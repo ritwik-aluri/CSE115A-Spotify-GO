@@ -1,7 +1,7 @@
 import {
     DataSnapshot,
     ref,
-    set, update,
+    set, update, remove
     get, query, child, orderByChild, startAt, endAt
 } from "firebase/database";
 
@@ -63,6 +63,11 @@ class DBInterface {
                 },
             });
         }
+    }
+
+    deleteUser(userid) {
+        const userRef = ref(this.db, 'users/' + userid);
+        remove(userRef);
     }
 
     // For all functions starting with "update", pass in null to a field to keep it the same as
