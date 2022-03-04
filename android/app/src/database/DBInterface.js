@@ -137,6 +137,12 @@ class DBInterface {
     // The functions all starting with "get" return data for a specific value for a specific user
     // from the database EXCEPT getNearbyUsers(), which returns a list of data for multiple users.
 
+    async getUser(userid) {
+        const userRef = ref(this.db, 'users/' + userid);
+        let user = await get(userRef);
+        return user.val();
+    }
+
     async getDisplayName(userid) {
         const userRef = ref(this.db, 'users/' + userid);
         let name = await get(child(userRef, "name"));
