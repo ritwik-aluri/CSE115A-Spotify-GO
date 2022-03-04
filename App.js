@@ -5,9 +5,9 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-export { userList };
-export { longitude, latitude };
-export { token_data };
+export { getNearby };
+export { currUser, currSong , userList};
+export { token_data , DBInterfaceInstance};
 import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
 import GetLocation from 'react-native-get-location';
 import initAppAndGetDB from './android/app/src/database/DBConfig';
@@ -17,11 +17,10 @@ import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
 
 
 let userList = [];
-let longitude = 0;
-let latitude = 0;
 let currUser;
 let currSong;
 let token_data;
+let DBInterfaceInstance;
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -40,17 +39,9 @@ export default function App() {
   firebase.initializeApp(config);
   const db = getDatabase();*/
   const db = initAppAndGetDB();
-  const DBInterfaceInstance = new DBInterface(db);
-  let songInfo;
-  let userInfo;
-  DBInterfaceInstance.getNearbyUsers("Cool Guy").then((output) => {
-    userList = output;
-    console.log(output);
-  }).catch(function(error) {
-    console.log('There has been a problem with your fetch operation: ' + error.message);
-  });
+  DBInterfaceInstance = new DBInterface(db);
 
-  GetLocation.getCurrentPosition({
+  /*GetLocation.getCurrentPosition({
     enableHighAccuracy: true,
     timeout: 15000,
   })
@@ -61,7 +52,7 @@ export default function App() {
   .catch(error => {
     const { code, message } = error;
     console.warn(code, message);
-  })
+  })*/
 
   //INITUSER HERE!!!!!!!!!!!!!!!!
 
@@ -75,12 +66,14 @@ export default function App() {
       token_data = result; console.log("token set");
       (Spotify.getCurrUserInfo(token_data["accessToken"])).then((currentUser) => {
 
-          userInfo = currentUser;
+          currUser = currentUser;
           DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.premium, false, 0, 0, true);
           (Spotify.getCurrSong(token_data["accessToken"])).then((currentSong) => {
-              songInfo = currentSong;
+              currSong = currentSong;
               DBInterfaceInstance.updateSong(currentUser.spotifyID, currentSong);
           });
+
+          getNearby();
 
       });
   });
@@ -144,4 +137,14 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
   );
+}
+
+function getNearby(){ 
+  console.log("bleh: " + userList);
+  DBInterfaceInstance.getNearbyUsers(currUser.spotifyID).then((output) => {
+    userList = output;
+    console.log(output);
+  }).catch(function(error) {
+    console.log('There has been a problem with your fetch operation: ' + error.message);
+  });
 }

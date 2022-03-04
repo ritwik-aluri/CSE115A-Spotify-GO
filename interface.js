@@ -20,12 +20,12 @@ import Icon_Entypo from 'react-native-vector-icons/Entypo';
 import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
-import { longitude, latitude, token_data } from "./App.js";
-
+import {currUser, currSong, token_data, getNearby} from "./App.js";
+import GetLocation from 'react-native-get-location';
 
 let profileInfo = "Username: \n\nCurrent Song Playing:";
 let username = "";
-let currSong = "";
+let currentSongPlaying = "";
 
 export { HomeScreen, ProfileScreen, SettingsScreen };
 import { userList } from './App.js';
@@ -50,8 +50,8 @@ function HomeScreen({navigation}){
             }}
           />
           <View style={{flexDirection: 'column', justifyContent: 'center', left: 12}}>
-            <Text style={{color: 'white'}}>{item.music}</Text>
-            <Text style={{color: 'grey'}}>{item.artist}</Text>
+            <Text style={{color: 'white'}}>{item.music.name}</Text>
+            <Text style={{color: 'grey'}}>{item.music.artist}</Text>
             <Text style={{color: 'grey'}}>
               User: {item.id}
             </Text>
@@ -81,15 +81,34 @@ function HomeScreen({navigation}){
   let [currLongitude, setLongitude] = React.useState(0);
 
   const handleResync = () => {
-    setLatitude(currLatitude = latitude);
-    setLongitude(currLongitude = longitude);
-    profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currSong;
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+    .then(location => {
+      setLatitude(currLatitude = location.latitude);
+      setLongitude(currLongitude = location.longitude);
+    })
+    .catch(error => {
+      const { code, message } = error;
+      console.warn(code, message);
+    })
+
+
+    profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currentSongPlaying;
+
+
+    getNearby("test");
+
+
+      //Update database with current user again
+    
   }
 
   const handleSongTest = () => {
     console.log(token_data);
-    Spotify.getCurrSong(token_data["accessToken"]).then((data) => {console.log(data); currSong = data.item.name;});
-    Spotify.getCurrUserInfo(token_data["accessToken"]).then((userdata) => {console.log(userdata); username = userdata.display_name;});
+    Spotify.getCurrSong(token_data["accessToken"]).then((data) => {console.log(data); currentSongPlaying = data.name; currSong = data});
+    Spotify.getCurrUserInfo(token_data["accessToken"]).then((userdata) => {console.log(userdata); username = userdata.displayName; currUser = userdata});
 
     
     /*Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])*/ 
