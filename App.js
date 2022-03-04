@@ -15,7 +15,8 @@ import DBInterface from './android/app/src/database/DBInterface';
 let userList = [];
 let longitude = 0;
 let latitude = 0;
-
+let currUser;
+let currSong;
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -35,9 +36,9 @@ export default function App() {
   const db = getDatabase();*/
   const db = initAppAndGetDB();
   const DBInterfaceInstance = new DBInterface(db);
-  DBInterfaceInstance.initUser("DBsample", "Sample", "Sample_URL", false, true, -1, -1, false,
-                               null, "id", "song_URL", "song_name", "artist", "art_URL");
-  DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => {
+  const songInfo = Spotify.getCurrSong(token_data["accessToken"]);
+  const userInfo = Spotify.getCurrUserInfo(token_data["accessToken"]);
+  DBInterfaceInstance.getNearbyUsers("Cool Guy").then((output) => {
     userList = output;
     console.log(output);
   }).catch(function(error) {
@@ -57,6 +58,11 @@ export default function App() {
     console.warn(code, message);
   })
 
+  //INITUSER HERE!!!!!!!!!!!!!!!!
+
+  /*DBInterfaceInstance.initUser(currUser.spotifyID, currUser.displayName, currUser.profileURL, currUser.premium, true, longitude, latitude, false,
+    null, "id", "song_URL", "song_name", "artist", "art_URL");*/
+
   // Use the DBInterface class instance to init users, update the database, and get nearby users
   // from now on! :)
   // The class is here: android/app/src/database/DBInterface.js
@@ -70,7 +76,7 @@ export default function App() {
   //   - Ritwik
 
   // This is a new push to the database, completely testing.
-  set(ref(db, 'users/' + "Guy"), {
+  /*set(ref(db, 'users/' + "Guy"), {
     music: "Second Chance",
     premium: true,
     sharing: true,
@@ -100,7 +106,7 @@ export default function App() {
   populateList();
 
   console.log("Printing userList at bottom of App() function: ")
-  console.log(userList);
+  console.log(userList);*/
 
 
   return (

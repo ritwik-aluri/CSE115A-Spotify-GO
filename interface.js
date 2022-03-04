@@ -24,9 +24,9 @@ import {longitude, latitude} from "./App.js";
 
 let token_data;
 authHandler.onLogin().then((result) => { token_data = result; console.log("token set"); });
-let profileInfo = "Username: \nCurrent Song Playing:";
-let username = "john23541";
-let currSong = "Stuck in the Abyss";
+let profileInfo = "Username: \n\nCurrent Song Playing:";
+let username = "";
+let currSong = "";
 
 export { HomeScreen, ProfileScreen, SettingsScreen };
 import { userList } from './App.js';
@@ -84,7 +84,7 @@ function HomeScreen({navigation}){
   const handleResync = () => {
     setLatitude(currLatitude = latitude);
     setLongitude(currLongitude = longitude);
-    profileInfo = "Username: " + username + "\nCurrent Song Playing: " + currSong;
+    profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currSong;
   }
 
   const handleSongTest = () => {
@@ -109,6 +109,7 @@ function HomeScreen({navigation}){
       }}
       showsUserLocation={true}>
       {userList[0] != null && userList.map((marker, index) => {
+        console.log(userList[0]);
         if (marker.latitude != null && marker.longitude != null) {
           return (
             <MapView.Marker
@@ -294,15 +295,15 @@ function HomeScreen({navigation}){
 function ProfileScreen({navigation}){
   const profileHeader = (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
-      <Text style = {{fontSize: 40, fontWeight: "bold"}}>
+      <Text style = {{fontSize: 40, fontWeight: "bold", color: "white"}}>
         Profile
       </Text>
     </View>
   );
 
   const profileText = (
-    <View style={{ flex: 3, justifyContent: 'flex-start' }}>
-      <Text style = {{fontSize: 20}}>{profileInfo}</Text>  
+    <View style={{ flex: 5, justifyContent: 'flex-start' }}>
+      <Text style = {{fontSize: 20, color: "white"}}>{profileInfo}</Text>  
     </View>
     );
 
@@ -334,17 +335,18 @@ function ProfileScreen({navigation}){
 };
 
 function SettingsScreen({navigation}){
+  const [enabled, isEnabled] = React.useState(true);
   const exitButton = (
     <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
       <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
       <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
     </TouchableOpacity>
   )
-  const settingsHeader = (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
-    <Text style = {{fontSize: 40, fontWeight: "bold"}}>Settings</Text>
+  const settingsHeader = (<View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
+    <Text style = {{fontSize: 40, fontWeight: "bold", color: "white"}}>Settings</Text>
   </View>)
-  const settingsText = (<View style={{ flex: 3, justifyContent: 'flex-start' }}>
-    <Text style = {{fontSize: 20}}>Remove consent to sharing data </Text>
+  const settingsText = (<View style={{ flex: 5, justifyContent: 'flex-start' }}>
+    <Text style = {{fontSize: 20, color: "white"}}>Remove consent to sharing data </Text>
     <Switch
       trackColor={{ false: "#767577", true: "#81b0ff" }}
       thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}

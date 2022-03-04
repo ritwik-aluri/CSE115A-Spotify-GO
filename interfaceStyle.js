@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
       ...StyleSheet.absoluteFillObject,
       height: '100%',
       width: '100%',
+      backgroundColor: "#555555",
     },
     map: {
       ...StyleSheet.absoluteFillObject,
