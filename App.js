@@ -6,15 +6,20 @@ import 'firebase/compat/firestore';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export { userList };
+export { longitude, latitude };
 import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
+import GetLocation from 'react-native-get-location';
+import initAppAndGetDB from './android/app/src/database/DBConfig';
+import DBInterface from './android/app/src/database/DBInterface';
 
 let userList = [];
-
+let longitude = 0;
+let latitude = 0;
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  let config = {
+  /*let config = {
     apiKey: "AIzaSyBBogvZGpzfWJeUeloFvvH2xguSyMnmPJA",
     authDomain: "spotify-go-ba7bf.firebaseapp.com",
     // The value of `databaseURL` depends on the location of the database
@@ -27,15 +32,50 @@ export default function App() {
     measurementId: "G-MEASUREMENT_ID",
   };
   firebase.initializeApp(config);
-  const db = getDatabase();
+  const db = getDatabase();*/
+  const db = initAppAndGetDB();
+  const DBInterfaceInstance = new DBInterface(db);
+  DBInterfaceInstance.initUser("DBsample", "Sample", "Sample_URL", false, true, -1, -1, false,
+                               null, "id", "song_URL", "song_name", "artist", "art_URL");
+  DBInterfaceInstance.getNearbyUsers("DBsample").then((output) => {
+    userList = output;
+    console.log(output);
+  }).catch(function(error) {
+    console.log('There has been a problem with your fetch operation: ' + error.message);
+  });
+
+  GetLocation.getCurrentPosition({
+    enableHighAccuracy: true,
+    timeout: 15000,
+  })
+  .then(location => {
+    longitude = location.longitude;
+    latitude = location.latitude;
+  })
+  .catch(error => {
+    const { code, message } = error;
+    console.warn(code, message);
+  })
+
+  // Use the DBInterface class instance to init users, update the database, and get nearby users
+  // from now on! :)
+  // The class is here: android/app/src/database/DBInterface.js
+  // Also, note that each user in the outputted list of DBInterfaceInstance.getNearbyUsers() can be
+  // treated as an object and their fields' data obtained with dot notation! All users are assumed
+  // to be structured as the "DBsample" user is.
+  // The last thing to note is that the parameter to getNearbyUsers() is supposed to be the current
+  // user's Spotify auth key, used to index the users in the database (as an example, Gabe's is
+  // already in there). So, Gabe, uh, replace that parameter that I've hardcoded to "DBsample" with
+  // your thing above.
+  //   - Ritwik
 
   // This is a new push to the database, completely testing.
   set(ref(db, 'users/' + "Guy"), {
     music: "Second Chance",
     premium: true,
     sharing: true,
-    latitude: 20,
-    longitude: 100
+    latitude: 37.78835,
+    longitude: -122.4314
   });
 
   // Populates the nearby user list from the Users table
@@ -46,6 +86,7 @@ export default function App() {
         userList.push({
           id: child.key,
           title: child.val().music,
+          artist: 'N/A',
           premium: child.val().premium,
           sharing: child.val().sharing,
           latitude: child.val().latitude,
@@ -54,12 +95,18 @@ export default function App() {
       })
     })
   };
+
+  userList.length = 0;
   populateList();
+
+  console.log("Printing userList at bottom of App() function: ")
+  console.log(userList);
+
 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{
-    headerShown: false
+    headerShown: false, animation: "none",
       }}>
         <Stack.Screen name = "Home" component={HomeScreen}/>
         <Stack.Screen name = "Profile" component={ProfileScreen}/>

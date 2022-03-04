@@ -11,11 +11,11 @@ class SpotifyAPI {
                     'Content-Type': 'application/json'
                 }
             });
-
-            const data = await response.json();
-            console.log("Currently playing " + data.item.name + " by " + data.item.artists[0].name + " " + data.item.external_urls.spotify + " " + data.item.album.images[2].url + " " + data.item.id)
-            console.log("getCurrSong: " + JSON.stringify(data));
-            return JSON.stringify(data);
+            let data = await response.json();
+            /*console.log("Currently playing " + data.item.name + " by " + data.item.artists[0].name + " " + data.item.external_urls.spotify + " " + data.item.album.images[2].url + " " + data.item.id)
+            console.log("getCurrSong: " + JSON.stringify(data));*/
+            return data;
+            
         } catch (error) {
             console.error(error);
         }
@@ -52,11 +52,10 @@ class SpotifyAPI {
                     'Content-Type': 'application/json'
                 }
             });
-
-            const userdata = await response.json();
-            console.log(userdata.display_name + " " + userdata.external_urls.spotify + " " + userdata.id + " " + userdata.product)
+            let userdata = await response.json();
+            return userdata;
+            //console.log(userdata.display_name + " " + userdata.external_urls.spotify + " " + userdata.id + " " + userdata.product)
             //console.log("getCurrUserdata: " + JSON.stringify(userdata));
-            return JSON.stringify(userdata);
         } catch (error) {
             console.error(error);
         }
@@ -79,7 +78,7 @@ class SpotifyAPI {
 
             const data = await response;
             console.log("saveCurrSong: status:" + data.status);
-            return JSON.stringify(data);
+            return data;
         } catch (error) {
             console.error(error);
         }
