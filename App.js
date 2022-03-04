@@ -7,16 +7,21 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export { userList };
 export { longitude, latitude };
+export { token_data };
 import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
 import GetLocation from 'react-native-get-location';
 import initAppAndGetDB from './android/app/src/database/DBConfig';
 import DBInterface from './android/app/src/database/DBInterface';
+import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
+import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
+
 
 let userList = [];
 let longitude = 0;
 let latitude = 0;
 let currUser;
 let currSong;
+let token_data;
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -36,8 +41,8 @@ export default function App() {
   const db = getDatabase();*/
   const db = initAppAndGetDB();
   const DBInterfaceInstance = new DBInterface(db);
-  const songInfo = Spotify.getCurrSong(token_data["accessToken"]);
-  const userInfo = Spotify.getCurrUserInfo(token_data["accessToken"]);
+  let songInfo;
+  let userInfo;
   DBInterfaceInstance.getNearbyUsers("Cool Guy").then((output) => {
     userList = output;
     console.log(output);
@@ -60,8 +65,27 @@ export default function App() {
 
   //INITUSER HERE!!!!!!!!!!!!!!!!
 
-  /*DBInterfaceInstance.initUser(currUser.spotifyID, currUser.displayName, currUser.profileURL, currUser.premium, true, longitude, latitude, false,
-    null, "id", "song_URL", "song_name", "artist", "art_URL");*/
+  authHandler.onLogin().then((result) => {
+      /*token_data = result; console.log("token set");
+      songInfo = Spotify.getCurrSong(token_data["accessToken"]);
+      userInfo = Spotify.getCurrUserInfo(token_data["accessToken"]);
+      DBInterfaceInstance.initUser(userInfo.spotifyID, userInfo.displayName, userInfo.profileURL, userInfo.premium, true, longitude, latitude, false,
+          Spotify.getCurrSong(token_data["accessToken"]));*/
+
+      token_data = result; console.log("token set");
+      (Spotify.getCurrUserInfo(token_data["accessToken"])).then((currentUser) => {
+
+          userInfo = currentUser;
+          DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.premium, false, 0, 0, true);
+          (Spotify.getCurrSong(token_data["accessToken"])).then((currentSong) => {
+              songInfo = currentSong;
+              DBInterfaceInstance.updateSong(currentUser.spotifyID, currentSong);
+          });
+
+      });
+  });
+
+  
 
   // Use the DBInterface class instance to init users, update the database, and get nearby users
   // from now on! :)

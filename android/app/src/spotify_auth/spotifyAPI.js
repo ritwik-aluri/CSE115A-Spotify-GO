@@ -1,3 +1,6 @@
+import Song from './song.js'
+import User from './user.js'
+
 class SpotifyAPI {
     constructor() {}
 
@@ -14,7 +17,8 @@ class SpotifyAPI {
             let data = await response.json();
             /*console.log("Currently playing " + data.item.name + " by " + data.item.artists[0].name + " " + data.item.external_urls.spotify + " " + data.item.album.images[2].url + " " + data.item.id)
             console.log("getCurrSong: " + JSON.stringify(data));*/
-            return data;
+            //return data;
+            return new Song(data.item.name, data.item.artists[0].name, data.item.album.images[2].url, data.item.external_urls.spotify, data.item.id);
             
         } catch (error) {
             console.error(error);
@@ -53,7 +57,8 @@ class SpotifyAPI {
                 }
             });
             let userdata = await response.json();
-            return userdata;
+            //return userdata;
+            return new User(userdata.display_name, userdata.external_urls.spotify, userdata.product, userdata.id);
             //console.log(userdata.display_name + " " + userdata.external_urls.spotify + " " + userdata.id + " " + userdata.product)
             //console.log("getCurrUserdata: " + JSON.stringify(userdata));
         } catch (error) {

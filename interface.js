@@ -20,10 +20,9 @@ import Icon_Entypo from 'react-native-vector-icons/Entypo';
 import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
-import {longitude, latitude} from "./App.js";
+import { longitude, latitude, token_data } from "./App.js";
 
-let token_data;
-authHandler.onLogin().then((result) => { token_data = result; console.log("token set"); });
+
 let profileInfo = "Username: \n\nCurrent Song Playing:";
 let username = "";
 let currSong = "";
