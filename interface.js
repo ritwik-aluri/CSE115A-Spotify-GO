@@ -51,7 +51,7 @@ function HomeScreen({navigation}){
             }}
           />
           <View style={{flexDirection: 'column', justifyContent: 'center', left: 12}}>
-            <Text style={{color: 'white'}}>{item.title}</Text>
+            <Text style={{color: 'white'}}>{item.music}</Text>
             <Text style={{color: 'grey'}}>{item.artist}</Text>
             <Text style={{color: 'grey'}}>
               User: {item.id}
@@ -109,18 +109,17 @@ function HomeScreen({navigation}){
       }}
       showsUserLocation={true}>
       {userList[0] != null && userList.map((marker, index) => {
-        console.log(userList[0]);
-        if (marker.latitude != null && marker.longitude != null) {
+        if (marker.coordinates.latitude != null && marker.coordinates.longitude != null && marker.share === true) {
           return (
             <MapView.Marker
               key={index}
               pinColor={'navy'}
               coordinate={{
-                latitude: marker.latitude,
-                longitude: marker.longitude
+                latitude: marker.coordinates.latitude,
+                longitude: marker.coordinates.longitude
               }}
               title={marker.id}
-              description={"Current Song: " + marker.title}
+              description={"Current Song: " + marker.music}
             >
               <View style={[styles.markerCircle]}>
                 <View style={[styles.markerInner]}></View>
@@ -136,7 +135,7 @@ function HomeScreen({navigation}){
                                     left: 12}}
                       >
                         <Text style={{color: 'white'}}>
-                          {marker.title}
+                          {marker.music}
                         </Text>
                         <Text style={{color: 'grey'}}>
                           N/A
