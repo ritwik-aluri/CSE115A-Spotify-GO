@@ -26,6 +26,7 @@ import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
 import {currUser, currSong, token_data, getNearby, updateCurrUserInfo, DBInterfaceInstance} from "./App.js";
 import GetLocation from 'react-native-get-location';
+import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
 
 let profileInfo = "Username: \n\nCurrent Song Playing:";
 let username = "";
@@ -37,11 +38,12 @@ export {toggleSwitch};
 import { userList } from './App.js';
 import DBInterface from './android/app/src/database/DBInterface.js';
 
-function HomeScreen({navigation}){
+function HomeScreen({navigation}) {
   let [text, onChangeText] = React.useState("Search ...");
   let [hidden, setHidden] = React.useState(true);
   let [currLatitude, setLatitude] = React.useState(0);
   let [currLongitude, setLongitude] = React.useState(0);
+  let [login, setLogin] = React.useState(true);
 
   const handleLink = (event) => {
     if (typeof(event) == 'string') {
@@ -50,6 +52,7 @@ function HomeScreen({navigation}){
   }
 
   const handleResync = () => {
+    setLogin(login = false);
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 15000,
@@ -63,7 +66,6 @@ function HomeScreen({navigation}){
       const { code, message } = error;
       console.warn(code, message);
     })
-
     profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currentSongPlaying;
   }
 
@@ -182,7 +184,7 @@ function HomeScreen({navigation}){
   <View style={[styles.musicMenu, {position: 'absolute'}]}>
     <TouchableOpacity
       activeOpacity={0.5} // Exit button for menu
-      style={[styles.exitButton]} 
+      style={[styles.exitButton]}
       onPress={() => setHidden(hidden = true)}
     >
       <View style={[styles.centering]}>
@@ -233,7 +235,39 @@ function HomeScreen({navigation}){
     </View>
   );
 
+  const dimensions = useWindowDimensions();
+  const loginScreen = (
+    <>
+    <View style={{width: dimensions.width,
+                  height: dimensions.height,
+                  backgroundColor: 'rgba(40,40,40,255)'}}           
+    >
+      <View style={[styles.centering]}>
+        <Icon_Entypo
+          name='spotify'
+          color='grey'
+          size={100}
+          style={{marginLeft: 'auto',
+                  marginRight: 'auto'}}
+        />
+        <View style={{height: 20}}/>
+        <Text style={[styles.centering, {fontSize: 40, color: 'white'}]}>Spotify GO</Text>
+      </View>
+    </View>
+
+    <View style={{marginLeft: 'auto', marginRight: 'auto', bottom: '30%'}}>
+      <Text style={{marginLeft: 'auto', marginRight: 'auto', color: 'grey', bottom: 10}}>Logged in</Text>
+      <TouchableOpacity activeOpacity={0.5} onPress={handleResync}>
+        <View style={{width: 170, height: 50, borderRadius: 25, backgroundColor: 'rgba(30,190,96,255)'}}>
+          <Text style={[styles.centering, {bottom: 2.5, fontSize: 20, color: 'black'}]}>Continue</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+    </>
+  )
+
   return (
+    <>
     <View style={styles.container}>
       {mapView}
       {bottomNagivationBackground}
@@ -252,6 +286,8 @@ function HomeScreen({navigation}){
       { !hidden && (musicMenu) }
       { hidden && (collapsedMenu) }
     </View>
+    {login && (loginScreen)}
+    </>
   );
 };
   
