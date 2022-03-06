@@ -37,8 +37,6 @@ export {toggleSwitch};
 import { userList } from './App.js';
 import DBInterface from './android/app/src/database/DBInterface.js';
 
-
-
 function HomeScreen({navigation}){
   let [text, onChangeText] = React.useState("Search ...");
   let [hidden, setHidden] = React.useState(true);
@@ -115,7 +113,6 @@ function HomeScreen({navigation}){
   };
 
   const mapView = ( // Map Display
-  
     <MapView
       provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
       style={styles.map}
@@ -171,7 +168,7 @@ function HomeScreen({navigation}){
                       </View>
                     </View>
                   </View>
-                  <View style={[styles.calloutPointer]}></View>
+                  <View style={[styles.calloutPointer]}/>
                 </View>
               </Callout>
             </MapView.Marker>
@@ -179,69 +176,6 @@ function HomeScreen({navigation}){
         }
       })}
     </MapView>
-  );
-
-  // const searchBar = ( // Search Bar Display
-  //   <View style={[styles.searchBar]}>
-  //     <TextInput
-  //       styles={[styles.searchBarText]}
-  //       onChangeText={onChangeText}
-  //       placeholder={"Search..."}
-  //     />
-  //   </View>
-  // );
-
-  // const rightSideButtons = ( // Right-side buttons
-  //   <View style = {{
-  //     position: 'absolute',
-  //     top: 20,
-  //     right: 5
-  //   }}>
-  //     <TouchableOpacity
-  //       activeOpacity={0.5}
-  //       style={[styles.rightButton]}
-  //     >
-  //     </TouchableOpacity>
-
-  //     <View style={{height: 10}}/>
-  //     <TouchableOpacity
-  //       activeOpacity={0.5}
-  //       style={[styles.rightButton]}
-  //     >
-  //       <Icon_Entypo
-  //         name="direction"
-  //         color='rgba(45,45,45,255)'
-  //         size={35}
-  //         style={{marginLeft: 'auto',
-  //                 marginRight: 'auto',
-  //                 marginTop: '23%'}}
-  //       />
-  //       <Text style={[styles.buttonText]}></Text>
-  //     </TouchableOpacity>
-  //   </View>
-  // );
-
-  const bottomNagivationBackground = ( // Background
-    <View style={{
-      position: 'absolute',
-      bottom: 0,
-      width: '100%'
-    }}>
-      {/* <View style = {{ // Background gradiance
-        position: 'relative',
-        alignSelf: 'center',
-        background: 'linear-gradient(to top, rgba(40,40,40,255), rgba(255,0,0,0))',
-        width: '100%',
-        height: 30
-      }} /> */}
-      <View style={{ // Background color
-        position: 'relative',
-        bottom: 0,
-        backgroundColor: 'rgba(40,40,40,255)',
-        width: '100%',
-        height: 70
-      }}/>
-    </View>
   );
 
   const musicMenu = (
@@ -303,8 +237,6 @@ function HomeScreen({navigation}){
     <View style={styles.container}>
       {mapView}
       {bottomNagivationBackground}
-      {/* {searchBar} */}
-      {/* {rightSideButtons} */}
       {bottomNagivationButtons(
         handleResync,
         'Resync',
@@ -326,7 +258,7 @@ function HomeScreen({navigation}){
 function ProfileScreen({navigation}){
   const profileHeader = (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
-      <Text style = {{fontSize: 40, fontWeight: "bold", color: "white"}}>
+      <Text style={{fontSize: 40, fontWeight: "bold", color: "white"}}>
         Profile
       </Text>
     </View>
@@ -334,22 +266,15 @@ function ProfileScreen({navigation}){
 
   const profileText = (
     <View style={{ flex: 5, justifyContent: 'flex-start' }}>
-      <Text style = {{fontSize: 20, color: "white"}}>{profileInfo}</Text>  
+      <Text style={{fontSize: 20, color: "white"}}>{profileInfo}</Text>  
     </View>
     );
 
-    // const exitButton = (
-    //   <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
-    //     <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
-    //     <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
-    //   </TouchableOpacity>
-    // );
-
   return (
     <View style={styles.container}>
-      {/* {exitButton} */}
       {profileHeader}
       {profileText}
+      {bottomNagivationBackground}
       {bottomNagivationButtons(
         () => (navigation.navigate('Home')),
         'Return',
@@ -368,17 +293,13 @@ function ProfileScreen({navigation}){
 
 function SettingsScreen({navigation}){
   const [enabled, isEnabled] = React.useState(false);
-  // const exitButton = (
-  //   <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
-  //     <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
-  //     <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
-  //   </TouchableOpacity>
-  // )
+
   const settingsHeader = (<View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
-    <Text style = {{fontSize: 40, fontWeight: "bold", color: "white"}}>Settings</Text>
+    <Text style={{fontSize: 40, fontWeight: "bold", color: "white"}}>Settings</Text>
   </View>)
+
   const settingsText = (<View style={{ flex: 5, justifyContent: 'flex-start' }}>
-    <Text style = {{fontSize: 20, color: "white"}}>Remove consent to sharing map data </Text>
+    <Text style={{fontSize: 20, color: "white"}}>Remove consent to sharing map data </Text>
     <Switch
       trackColor={{ false: "#767577", true: "#81b0ff" }}
       thumbColor={enabled ? "#f5dd4b" : "#f4f3f4"}
@@ -389,9 +310,9 @@ function SettingsScreen({navigation}){
   
   return (
     <View style={styles.container}>
-      {/* {exitButton} */}
       {settingsHeader}
       {settingsText}
+      {bottomNagivationBackground}
       {bottomNagivationButtons(
         () => (navigation.navigate('Home')),
         'Return',
@@ -438,7 +359,7 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
             />
           </View>
           <View style={{marginBottom: '10%'}}>
-            <Text style = {[styles.buttonText]}>
+            <Text style={[styles.buttonText]}>
               {leftText}
             </Text>
           </View>
@@ -537,4 +458,20 @@ const profileButton = (press) => (
   >
     <View style={[styles.profileButtonInner]}/>
   </TouchableOpacity>
+);
+
+const bottomNagivationBackground = ( // Background
+<View style={{
+  position: 'absolute',
+  bottom: 0,
+  width: '100%'
+}}>
+  <View style={{ // Background color
+    position: 'relative',
+    bottom: 0,
+    backgroundColor: 'rgba(40,40,40,255)',
+    width: '100%',
+    height: 70
+  }}/>
+</View>
 );
