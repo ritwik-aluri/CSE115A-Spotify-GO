@@ -24,16 +24,18 @@ import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Icon_AntDesign from 'react-native-vector-icons/AntDesign';
 import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
-import {currUser, currSong, token_data, getNearby, updateCurrUserInfo} from "./App.js";
+import {currUser, currSong, token_data, getNearby, updateCurrUserInfo, DBInterfaceInstance} from "./App.js";
 import GetLocation from 'react-native-get-location';
 
 let profileInfo = "Username: \n\nCurrent Song Playing:";
 let username = "";
 let currentSongPlaying = "";
+let toggleSwitch = false;
 
 export { HomeScreen, ProfileScreen, SettingsScreen };
+export {toggleSwitch};
 import { userList } from './App.js';
-let toggleSwitch;
+import DBInterface from './android/app/src/database/DBInterface.js';
 
 
 
@@ -360,7 +362,7 @@ function ProfileScreen({navigation}){
 };
 
 function SettingsScreen({navigation}){
-  const [enabled, isEnabled] = React.useState(true);
+  const [enabled, isEnabled] = React.useState(false);
   const exitButton = (
     <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
       <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
@@ -371,12 +373,12 @@ function SettingsScreen({navigation}){
     <Text style = {{fontSize: 40, fontWeight: "bold", color: "white"}}>Settings</Text>
   </View>)
   const settingsText = (<View style={{ flex: 5, justifyContent: 'flex-start' }}>
-    <Text style = {{fontSize: 20, color: "white"}}>Remove consent to sharing data </Text>
+    <Text style = {{fontSize: 20, color: "white"}}>Remove consent to sharing map data </Text>
     <Switch
       trackColor={{ false: "#767577", true: "#81b0ff" }}
-      thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-      onValueChange={toggleSwitch}
-      value={isEnabled}
+      thumbColor={enabled ? "#f5dd4b" : "#f4f3f4"}
+      onValueChange={() => {toggleSwitch = !enabled; isEnabled(previousState => !previousState);}}
+      value={enabled}
     />
   </View>)
   

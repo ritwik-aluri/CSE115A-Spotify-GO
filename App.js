@@ -9,7 +9,7 @@ import { encode, decode } from 'firebase-encode';
 export { getNearby, updateCurrUserInfo };
 export { currUser, currSong , userList};
 export { token_data , DBInterfaceInstance};
-import { HomeScreen, ProfileScreen, SettingsScreen } from './interface.js';
+import { HomeScreen, ProfileScreen, SettingsScreen, toggleSwitch } from './interface.js';
 import GetLocation from 'react-native-get-location';
 import initAppAndGetDB from './android/app/src/database/DBConfig';
 import DBInterface from './android/app/src/database/DBInterface';
@@ -166,6 +166,7 @@ function updateCurrUserInfo(){
       timeout: 15000,
     })
     .then(location => {
+      DBInterfaceInstance.updateLocationShareStatus(currentUser.spotifyID, toggleSwitch);
       DBInterfaceInstance.updateLocation(currentUser.spotifyID, location.latitude, location.longitude);
       getNearby();
     })
