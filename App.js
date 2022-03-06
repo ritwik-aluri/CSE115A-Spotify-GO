@@ -5,6 +5,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { encode, decode } from 'firebase-encode';
 export { getNearby };
 export { currUser, currSong , userList};
 export { token_data , DBInterfaceInstance};
@@ -66,6 +67,7 @@ export default function App() {
       token_data = result; console.log("token set");
       (Spotify.getCurrUserInfo(token_data["accessToken"])).then((currentUser) => {
 
+          currentUser.spotifyID = encode(currentUser.spotifyID);  // Firebase doesn't like certain available Spotify username chars in its keys
           currUser = currentUser;
           DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.premium, false, 0, 0, true);
           (Spotify.getCurrSong(token_data["accessToken"])).then((currentSong) => {

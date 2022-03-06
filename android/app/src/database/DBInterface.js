@@ -19,11 +19,11 @@ class DBInterface {
 
     initUser(userid, _name=PLACEHOLDER_STRING, _spotify_url=PLACEHOLDER_STRING,
              _premium=false, _sharing=false, _lat=PLACEHOLDER_VALUE,
-             _long=PLACEHOLDER_VALUE, _playback=PLACEHOLDER_VALUE,
+             _long=PLACEHOLDER_VALUE, _playback=false,
              songObj=null,
              _music_id=PLACEHOLDER_STRING, _music_url=PLACEHOLDER_STRING,
              _music_name=PLACEHOLDER_STRING, _music_artist=PLACEHOLDER_STRING,
-             _music_art=PLACEHOLDER_VALUE) {
+             _music_art=PLACEHOLDER_STRING) {
         const userRef = ref(this.db, 'users/' + userid);
         if (songObj !== null) {  // A structured song object was NOT passed in
             set(userRef, {
