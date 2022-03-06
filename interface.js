@@ -16,6 +16,7 @@ import {
     Image,
     Linking
   } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { styles } from './interfaceStyle.js';
 import { darkMap } from './mapStyle.js';
 import Icon_Entypo from 'react-native-vector-icons/Entypo';
@@ -112,6 +113,7 @@ function HomeScreen({navigation}){
   };
 
   const mapView = ( // Map Display
+  
     <MapView
       provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
       style={styles.map}
@@ -146,13 +148,9 @@ function HomeScreen({navigation}){
                   <View style={[styles.calloutMenu]}>
                     <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
                     <View style={[styles.templateEntry]}>
-                      <Image style={{width: 60, height: 60}} 
-                        source={{
-                          uri: marker.music.artUrl,
-                        }}>
-                      </Image>
-                    </View>
-                      <View style={{flexDirection: 'column',
+                        <WebView style={{ height: 60 , width: 60, }} source={{ uri: marker.music.artUrl }} />
+                     </View>
+                     <View style={{flexDirection: 'column',
                                     justifyContent: 'center',
                                     left: 12}}
                       >
