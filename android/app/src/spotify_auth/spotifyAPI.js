@@ -14,11 +14,16 @@ class SpotifyAPI {
                     'Content-Type': 'application/json'
                 }
             });
+            if(response.status != 200){
+                return null;
+            }
+
             let data = await response.json();
             /*console.log("Currently playing " + data.item.name + " by " + data.item.artists[0].name + " " + data.item.external_urls.spotify + " " + data.item.album.images[2].url + " " + data.item.id)
             console.log("getCurrSong: " + JSON.stringify(data));*/
             //return data;
             return new Song(data.item.name, data.item.artists[0].name, data.item.album.images[2].url, data.item.external_urls.spotify, data.item.id);
+
             
         } catch (error) {
             console.error(error);

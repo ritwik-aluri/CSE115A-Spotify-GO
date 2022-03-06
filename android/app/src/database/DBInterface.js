@@ -232,7 +232,7 @@ class DBInterface {
             childData = childSnapshot.val();
             if (childKey !== curUserID &&
                 childData.coordinates.latitude >= latVal.val() - RADIUS &&
-                childData.coordinates.latitude <= latVal.val() + RADIUS) {
+                childData.coordinates.latitude <= latVal.val() + RADIUS && childData.music.song_id != -1) {
                 output.push(childSnapshot.val());
             }
         });

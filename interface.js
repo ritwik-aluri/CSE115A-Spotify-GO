@@ -13,6 +13,7 @@ import {
     FlatList,
     Dimensions,
     Switch,
+    Image,
   } from 'react-native';
 import { styles } from './interfaceStyle.js';
 import { darkMap } from './mapStyle.js';
@@ -20,7 +21,7 @@ import Icon_Entypo from 'react-native-vector-icons/Entypo';
 import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
-import {currUser, currSong, token_data, getNearby} from "./App.js";
+import {currUser, currSong, token_data, getNearby, updateCurrUserInfo} from "./App.js";
 import GetLocation from 'react-native-get-location';
 
 let profileInfo = "Username: \n\nCurrent Song Playing:";
@@ -41,19 +42,18 @@ function HomeScreen({navigation}){
     <View style={[styles.listItem]}>
       <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
         <View style={{width: '90%', flexDirection: 'row'}}>
-          <View style={{
-            width: 60,
-            height: 60,
-            left: 5,
-            backgroundColor: 'rgba(10,120,50,100)',
-            borderRadius: 5
-            }}
-          />
+        <View style={[styles.templateEntry]}>
+          <Image style={{width: 60, height: 60}} 
+            source={{
+              uri: item.music.artUrl,
+            }}>
+          </Image>
+        </View>
           <View style={{flexDirection: 'column', justifyContent: 'center', left: 12}}>
             <Text style={{color: 'white'}}>{item.music.name}</Text>
             <Text style={{color: 'grey'}}>{item.music.artist}</Text>
             <Text style={{color: 'grey'}}>
-              User: {item.id}
+              User: {item.name}
             </Text>
           </View>
         </View>
@@ -88,6 +88,7 @@ function HomeScreen({navigation}){
     .then(location => {
       setLatitude(currLatitude = location.latitude);
       setLongitude(currLongitude = location.longitude);
+      updateCurrUserInfo();
     })
     .catch(error => {
       const { code, message } = error;
@@ -96,19 +97,11 @@ function HomeScreen({navigation}){
 
 
     profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currentSongPlaying;
-
-
-    getNearby("test");
-
-
-      //Update database with current user again
     
   }
 
   const handleSongTest = () => {
     console.log(token_data);
-    Spotify.getCurrSong(token_data["accessToken"]).then((data) => {console.log(data); currentSongPlaying = data.name; currSong = data});
-    Spotify.getCurrUserInfo(token_data["accessToken"]).then((userdata) => {console.log(userdata); username = userdata.displayName; currUser = userdata});
 
     
     /*Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])*/ 
@@ -127,7 +120,7 @@ function HomeScreen({navigation}){
       }}
       showsUserLocation={true}>
       {userList[0] != null && userList.map((marker, index) => {
-        if (marker.coordinates.latitude != null && marker.coordinates.longitude != null && marker.share === true) {
+        if (marker.coordinates.latitude != null && marker.coordinates.longitude != null && marker.sharing === true) {
           return (
             <MapView.Marker
               key={index}
@@ -136,8 +129,8 @@ function HomeScreen({navigation}){
                 latitude: marker.coordinates.latitude,
                 longitude: marker.coordinates.longitude
               }}
-              title={marker.id}
-              description={"Current Song: " + marker.music}
+              title={marker.name}
+              description={"Current Song: " + marker.music.name}
             >
               <View style={[styles.markerCircle]}>
                 <View style={[styles.markerInner]}></View>
@@ -153,13 +146,13 @@ function HomeScreen({navigation}){
                                     left: 12}}
                       >
                         <Text style={{color: 'white'}}>
-                          {marker.music}
+                          {marker.music.name}
                         </Text>
                         <Text style={{color: 'grey'}}>
-                          N/A
+                          {marker.music.artist}
                         </Text>
                         <Text style={{color: 'grey'}}>
-                          User: {marker.id}
+                          User: {marker.name}
                         </Text>
                       </View>
                     </View>
@@ -267,20 +260,26 @@ function HomeScreen({navigation}){
   const collapsedMenu = (
     <View style={[styles.collapsedMenu]}>
       <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
-        <View style={[styles.templateEntry]}/>
+        <View style={[styles.templateEntry]}>
+        <Image style={{width: 60, height: 60}} 
+            source={{
+              uri: currSong.artUrl,
+            }}>
+          </Image>
+        </View>
         <View style={{flexDirection: 'column',
                       justifyContent: 'center',
                       left: 12}}
         >
-          <Text style={{color: 'white'}}>
-            N/A
-          </Text>
-          <Text style={{color: 'grey'}}>
-            N/A
-          </Text>
-          <Text style={{color: 'grey'}}>
-            User: N/A
-          </Text>
+        <Text style={{color: 'white'}}>
+          {currSong.name}
+        </Text>
+       <Text style={{color: 'grey'}}>
+          {currSong.artist}
+        </Text>
+       <Text style={{color: 'grey'}}>
+          User: {currUser.displayName}
+        </Text>
         </View>
       </View>
     </View>
