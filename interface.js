@@ -145,12 +145,15 @@ function HomeScreen({navigation}){
               <View style={[styles.markerCircle]}>
                 <View style={[styles.markerInner]}></View>
               </View>
-              <Callout tooltip>
+              <Callout
+                tooltip
+                onPress={() => handleLink(marker.music.url)}
+              >
                 <View>
                   <View style={[styles.calloutMenu]}>
                     <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
                     <View style={[styles.templateEntry]}>
-                        <WebView style={{ height: 60 , width: 60, }} source={{ uri: marker.music.artUrl }} />
+                        <WebView style={{ height: 60 , width: 60 }} source={{ uri: marker.music.artUrl }} />
                      </View>
                      <View style={{flexDirection: 'column',
                                     justifyContent: 'center',
@@ -304,13 +307,14 @@ function HomeScreen({navigation}){
       {/* {rightSideButtons} */}
       {bottomNagivationButtons(
         handleResync,
-        "Resync",
+        'Resync',
         () => setHidden(hidden = false),
-        "Nearby",
+        'Nearby',
         () => handleSongTest(),
-        "Test Button",
+        'Test Button',
         () => navigation.navigate('Settings'),
-        "Settings"
+        'Settings',
+        'menu'
       )}
       {profileButton(() => navigation.navigate('Profile'))}
       { !hidden && (musicMenu) }
@@ -334,27 +338,28 @@ function ProfileScreen({navigation}){
     </View>
     );
 
-    const exitButton = (
-      <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
-        <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
-        <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
-      </TouchableOpacity>
-    );
+    // const exitButton = (
+    //   <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
+    //     <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
+    //     <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
+    //   </TouchableOpacity>
+    // );
 
   return (
     <View style={styles.container}>
-      {exitButton}
+      {/* {exitButton} */}
       {profileHeader}
       {profileText}
       {bottomNagivationButtons(
-        () => ("NULL"),
-        "Resync",
-        () => ("NULL"),
-        "Nearby",
+        () => (navigation.navigate('Home')),
+        'Return',
+        () => ('NULL'),
+        'NULL',
         () => navigation.navigate('Profile'),
-        "Test Button",
+        'Test Button',
         () => navigation.navigate('Settings'),
-        "Settings"
+        'Settings',
+        'other'
       )}
       {profileButton(() => navigation.navigate('Profile'))}
     </View>
@@ -363,12 +368,12 @@ function ProfileScreen({navigation}){
 
 function SettingsScreen({navigation}){
   const [enabled, isEnabled] = React.useState(false);
-  const exitButton = (
-    <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
-      <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
-      <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
-    </TouchableOpacity>
-  )
+  // const exitButton = (
+  //   <TouchableOpacity activeOpacity = '1' style={[styles.button]} onPress={() => navigation.navigate('Home')}>
+  //     <View style = {{ marginTop: 'auto', marginBottom: 'auto', marginLeft: 'auto', marginRight: 'auto'}}><Icon_Entypo name="cross" color="white" size={33}/></View>
+  //     <View style = {{marginTop: '10%'}}><Text style = {[styles.buttonText]}>Return</Text></View>
+  //   </TouchableOpacity>
+  // )
   const settingsHeader = (<View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
     <Text style = {{fontSize: 40, fontWeight: "bold", color: "white"}}>Settings</Text>
   </View>)
@@ -384,18 +389,19 @@ function SettingsScreen({navigation}){
   
   return (
     <View style={styles.container}>
-      {exitButton}
+      {/* {exitButton} */}
       {settingsHeader}
       {settingsText}
       {bottomNagivationButtons(
-        () => ("NULL"),
-        "Resync",
-        () => ("NULL"),
-        "Nearby",
+        () => (navigation.navigate('Home')),
+        'Return',
+        () => ('NULL'),
+        'NULL',
         () => navigation.navigate('Profile'),
-        "Test Button",
+        'Test Button',
         () => navigation.navigate('Settings'),
-        "Settings"
+        'Settings',
+        'other'
       )}
       {profileButton(() => navigation.navigate('Profile'))}
     </View>
@@ -404,41 +410,47 @@ function SettingsScreen({navigation}){
 
 
 // Bottom bar button navigation
-const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight, midRightText, right, rightText) => (
+const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight, midRightText, right, rightText, screenView) => {
+
+  return (
   <View style={{
     position: 'absolute',
     bottom: 30,
     width: '100%',
     zIndex: 1
   }}>
+    
     <View style={{ // Spacing Buttons
       justifyContent: 'space-evenly',
       flexDirection: 'row', 
     }}>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={[styles.button]}
-        onPress={left}
-      >
-        <View style={[styles.centering]}>
-          <Icon_EvilIcons
-            name='refresh'
-            color='white'
-            size={40}
-          />
-        </View>
-        <View style={{marginBottom: '10%'}}>
-          <Text style = {[styles.buttonText]}>
-            {leftText}
-          </Text>
+      {screenView == 'menu' && (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={[styles.button]}
+          onPress={left}
+        >
+          <View style={[styles.centering]}>
+            <Icon_EvilIcons
+              name='refresh'
+              color='white'
+              size={40}
+            />
           </View>
-      </TouchableOpacity>
+          <View style={{marginBottom: '10%'}}>
+            <Text style = {[styles.buttonText]}>
+              {leftText}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
 
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={[styles.button]}
-        onPress={midLeft}
-      >
+      {screenView == 'menu' && (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={[styles.button]}
+          onPress={midLeft}
+        >
         <View style={[styles.centering]}>
           <Icon_Entypo
             name='list'
@@ -449,13 +461,38 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
           />
         </View>
         <View style={{marginBottom: '10%'}}>
-          <Text style = {[styles.buttonText]}>
+          <Text style={[styles.buttonText]}>
             {midLeftText}
           </Text>
         </View>
       </TouchableOpacity>
+      )}
 
-      <View style = {{width: 90}}/>
+      {screenView == 'other' && (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={[styles.bottomExitButton]}
+          onPress={left}
+        >
+          <View style={[styles.centering, {justifyContent: 'space-evenly', flexDirection: 'row'}]}>
+            <Icon_Entypo
+              name='back'
+              color='white'
+              size={30}
+              style={{marginLeft: 'auto',
+                      marginRight: 'auto'}}
+            />
+            <View style={{width: 10}}/>
+            <View>
+            <Text style={[styles.buttonText, {right: 5, marginTop: 'auto', marginBottom: 'auto'}]}>
+                {leftText}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )}
+      
+      <View style={{width: 90}}/>
 
       <TouchableOpacity
         activeOpacity={0.5}
@@ -489,7 +526,8 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
       </TouchableOpacity>
     </View>
   </View>
-);
+  );
+};
 
 const profileButton = (press) => (
   <TouchableOpacity

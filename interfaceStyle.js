@@ -21,6 +21,16 @@ const styles = StyleSheet.create({
       opacity: 1,
       elevation: 5
     },
+    bottomExitButton: {
+      width: 138,
+      height: 65,
+      borderRadius: 10,
+      backgroundColor: 'rgba(45,45,45,255)',
+      shadowOpacity: 0.75,
+      shadowRadius: 5,
+      opacity: 1,
+      elevation: 5
+    },
     rightButton: {
       width: 65,
       height: 65,
