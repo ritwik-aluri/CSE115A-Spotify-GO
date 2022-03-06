@@ -46,6 +46,9 @@ export default function App() {
       console.log("token set");
       updateCurrUserInfo();
       setLogin(login = false);
+    })
+    .catch(error => {
+      const { code, message } = error;
     });
   }
   
