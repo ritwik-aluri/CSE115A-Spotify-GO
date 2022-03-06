@@ -14,11 +14,13 @@ import {
     Dimensions,
     Switch,
     Image,
+    Linking
   } from 'react-native';
 import { styles } from './interfaceStyle.js';
 import { darkMap } from './mapStyle.js';
 import Icon_Entypo from 'react-native-vector-icons/Entypo';
 import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Icon_AntDesign from 'react-native-vector-icons/AntDesign';
 import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
 import {currUser, currSong, token_data, getNearby, updateCurrUserInfo} from "./App.js";
@@ -37,7 +39,38 @@ let toggleSwitch;
 function HomeScreen({navigation}){
   let [text, onChangeText] = React.useState("Search ...");
   let [hidden, setHidden] = React.useState(true);
-  
+  let [currLatitude, setLatitude] = React.useState(0);
+  let [currLongitude, setLongitude] = React.useState(0);
+
+  const handleLink = (event) => {
+    if (typeof(event) == 'string') {
+      Linking.openURL(event);
+    }
+  }
+
+  const handleResync = () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+    .then(location => {
+      setLatitude(currLatitude = location.latitude);
+      setLongitude(currLongitude = location.longitude);
+      updateCurrUserInfo();
+    })
+    .catch(error => {
+      const { code, message } = error;
+      console.warn(code, message);
+    })
+
+    profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currentSongPlaying;
+  }
+
+  const handleSongTest = () => {
+    console.log(token_data);
+    // Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])
+  }
+
   const Item = ({ item }) => (
     <View style={[styles.listItem]}>
       <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -60,11 +93,12 @@ function HomeScreen({navigation}){
         <TouchableOpacity
           activeOpacity={0.5}
           style={{justifyContent: 'center', width: '10%'}}
+          onPress={() => handleLink(item.music.url)}
         >
-          <Icon_Entypo
-            name="dots-three-horizontal"
+          <Icon_AntDesign
+            name="export2"
             color="grey"
-            size={18}
+            size={20}
           />
         </TouchableOpacity>
       </View>
@@ -77,36 +111,6 @@ function HomeScreen({navigation}){
     );
   };
 
-  let [currLatitude, setLatitude] = React.useState(0);
-  let [currLongitude, setLongitude] = React.useState(0);
-
-  const handleResync = () => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 15000,
-    })
-    .then(location => {
-      setLatitude(currLatitude = location.latitude);
-      setLongitude(currLongitude = location.longitude);
-      updateCurrUserInfo();
-    })
-    .catch(error => {
-      const { code, message } = error;
-      console.warn(code, message);
-    })
-
-
-    profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currentSongPlaying;
-    
-  }
-
-  const handleSongTest = () => {
-    console.log(token_data);
-
-    
-    /*Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])*/ 
-  }
-
   const mapView = ( // Map Display
     <MapView
       provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
@@ -118,7 +122,9 @@ function HomeScreen({navigation}){
         latitudeDelta: 0.015,
         longitudeDelta: 0.0121,
       }}
-      showsUserLocation={true}>
+      showsUserLocation={true}
+      showsMyLocationButton={true}>
+        
       {userList[0] != null && userList.map((marker, index) => {
         if (marker.coordinates.latitude != null && marker.coordinates.longitude != null && marker.sharing === true) {
           return (
@@ -139,8 +145,13 @@ function HomeScreen({navigation}){
                 <View>
                   <View style={[styles.calloutMenu]}>
                     <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
-                      <View style={[styles.templateEntry]}
-                      />
+                    <View style={[styles.templateEntry]}>
+                      <Image style={{width: 60, height: 60}} 
+                        source={{
+                          uri: marker.music.artUrl,
+                        }}>
+                      </Image>
+                    </View>
                       <View style={{flexDirection: 'column',
                                     justifyContent: 'center',
                                     left: 12}}
@@ -167,45 +178,45 @@ function HomeScreen({navigation}){
     </MapView>
   );
 
-  const searchBar = ( // Search Bar Display
-    <View style={[styles.searchBar]}>
-      <TextInput
-        styles={[styles.searchBarText]}
-        onChangeText={onChangeText}
-        placeholder={"Search..."}
-      />
-    </View>
-  );
+  // const searchBar = ( // Search Bar Display
+  //   <View style={[styles.searchBar]}>
+  //     <TextInput
+  //       styles={[styles.searchBarText]}
+  //       onChangeText={onChangeText}
+  //       placeholder={"Search..."}
+  //     />
+  //   </View>
+  // );
 
-  const rightSideButtons = ( // Right-side buttons
-    <View style = {{
-      position: 'absolute',
-      top: 20,
-      right: 5
-    }}>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={[styles.rightButton]}
-      >
-      </TouchableOpacity>
+  // const rightSideButtons = ( // Right-side buttons
+  //   <View style = {{
+  //     position: 'absolute',
+  //     top: 20,
+  //     right: 5
+  //   }}>
+  //     <TouchableOpacity
+  //       activeOpacity={0.5}
+  //       style={[styles.rightButton]}
+  //     >
+  //     </TouchableOpacity>
 
-      <View style={{height: 10}}/>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={[styles.rightButton]}
-      >
-        <Icon_Entypo
-          name="direction"
-          color='rgba(45,45,45,255)'
-          size={35}
-          style={{marginLeft: 'auto',
-                  marginRight: 'auto',
-                  marginTop: '23%'}}
-        />
-        <Text style={[styles.buttonText]}></Text>
-      </TouchableOpacity>
-    </View>
-  );
+  //     <View style={{height: 10}}/>
+  //     <TouchableOpacity
+  //       activeOpacity={0.5}
+  //       style={[styles.rightButton]}
+  //     >
+  //       <Icon_Entypo
+  //         name="direction"
+  //         color='rgba(45,45,45,255)'
+  //         size={35}
+  //         style={{marginLeft: 'auto',
+  //                 marginRight: 'auto',
+  //                 marginTop: '23%'}}
+  //       />
+  //       <Text style={[styles.buttonText]}></Text>
+  //     </TouchableOpacity>
+  //   </View>
+  // );
 
   const bottomNagivationBackground = ( // Background
     <View style={{
@@ -289,8 +300,8 @@ function HomeScreen({navigation}){
     <View style={styles.container}>
       {mapView}
       {bottomNagivationBackground}
-      {searchBar}
-      {rightSideButtons}
+      {/* {searchBar} */}
+      {/* {rightSideButtons} */}
       {bottomNagivationButtons(
         handleResync,
         "Resync",
