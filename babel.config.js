@@ -1,3 +1,7 @@
-module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
-};
+module.exports = {presets: ['@babel/preset-env', "@babel/preset-react", "module:metro-react-native-babel-preset"],
+  env: {
+    test: {
+      plugins: ["@babel/plugin-transform-runtime"]
+    }
+  }
+}
