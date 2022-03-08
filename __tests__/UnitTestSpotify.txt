@@ -1,0 +1,68 @@
+______________________________________________________________________
+Fajardo, Gabriel
+Spotify API Authentication Module
+
+Details About Module______________________________
+This module handles the Spotify authentication, specifically
+opening the spotify OAuth login and returning the logged in
+user's token so that we can run API lookups. It also keeps track
+of all of the "scopes" or permissions that we're requesting from
+spotify.
+
+Details About Testing_____________________________
+To test this I acted as a user of the app logging in to spotify
+and then used the API calls refered to in the subsequent section.
+If the module works I am able to get good data from the return values
+of these API calls.
+
+Input Equivalence Classes and Relevant Tests______
+Input: user login
+	The user can either login or not log in. If the user logs in
+	then the module stores the user's token. If the user doesn't
+	log in then the module will return undefined. This doesn't 
+	cause a problem however becuase the user is forced to have a
+	valid token before they are able to use the rest of the app.
+
+______________________________________________________________________
+Spotify API Wrapper Module
+
+Details About Module______________________________
+The spotifyAPI module is an adapter for the spotify API which
+helps automate the API calls and parsing of the returned data.
+Within the module there are four methods which are used to
+interact with the Spotify API. The getCurrSong method takes in
+the user's spotify authentication token and returns either a 
+Song object with all the relevant information about the current
+song being played by the user and/or throws an error and returns
+null. The getCurrUserInfo method takes in a the user's spotify 
+authentication token and returns either a User object with all
+the relevant information about the user or throws an error. The 
+saveSong function takes in a spotify object id and a user's 
+spotify authentication token and sends an api request that adds
+the object to the users "liked songs" playlist on spotify.
+
+Details About Testing_____________________________
+To test the getCurrSong method I used the token of the user logged
+into the app and I made a print statement that would print the value
+returned by getCurrSong. Then I went onto spotify and played a song. 
+When the method is working I am able to see the song that I am currently
+listening to on Spotify. 
+To test the getCurrUserInfo method I used the token of the user 
+logged into the app and I made a print statement that would print
+the value returned by getCurrUserInfo. When the method is working I
+am able to see details about my account information in the console.
+To test the saveSong method I saved an object id returned from testing 
+getCurrSong method along with the token of the currently logged in user
+and used these to try and like a song from within our app. When the
+method is working, the test song appears in my liked songs playlist
+on the spotify website.
+
+
+Input Equivalence Classes and Relevant Tests______
+Input: user token
+	The user is unable to reach any part of code involving these API 
+	calls before they have logged in so the user token will always be
+	set to a valid spotify user token.
+
+Input: Spotify object id
+	These are only retrieved from spotify so they must be valid.
