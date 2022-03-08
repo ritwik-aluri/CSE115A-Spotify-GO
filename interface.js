@@ -31,7 +31,7 @@ import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimen
 let profileInfo = "Username: \n\nCurrent Song Playing:";
 let username = "";
 let currentSongPlaying = "";
-let toggleSwitch = false;
+let toggleSwitch = true;
 
 export { HomeScreen, ProfileScreen, SettingsScreen };
 export {toggleSwitch};
