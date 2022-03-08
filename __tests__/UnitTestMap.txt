@@ -28,8 +28,22 @@ My responsibility was to make sure that the map would accurately display
 the location of the user. This is accomplished via the usage of the
 React Native API "react-native-get-location", which, among other things,
 allows the app to access the location of the device currently running the
-app and store the longitude and latitude of the value
+app and store the device's longitude and latitude in special fields.
+Those fields could then be accessed and used in mapView, which centers the
+given map on said longitude and latitude, displaying a fixed radius of space
+around the center point. As the map is essentially the same as the Google
+Maps app, it can be manipulated with touch controls (or mouse, in my case,
+as I was on an Android emulator for testing). 
 
 Details About Testing_____________________________
+Testing this module was pretty straightforward. As the map is a core visual
+element of the app, it was readily apparent if the map was displaying incorrect
+information or was otherwise broken. All that really needed to be done was
+to check to see if the map could handle different locations. By default, the
+emulator's location was set to Google's headquarters in Mountain View, and
+no matter how many times I ran the code, it stayed that way. However, when I
+learned that I could manually change the location of the "device" using the
+Android emulator's built-in "set point" system, I was able to verify very 
+quickly that mapView was accurately representing the specified location.
 ______________________________________________________________________
 
