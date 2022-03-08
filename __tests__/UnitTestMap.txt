@@ -10,8 +10,31 @@ Juarez, Michael
 Map Component
 
 Details About Module______________________________
+For this project, I worked mainly on the map portion of the project, which
+was mainly accomplished using the React Native Maps library. Using this library,
+I was able to display the map on the "canvas" of the React Native application on
+our Android Emulator. With the React Native Maps Library we were able to display
+and use Google Maps for our application, along with the features that come with
+it. I was able to modify the color scheme of the map, using the features and
+themes provided by Google Maps. From there, I then worked on placing map markers
+on the map, so as to show the other users on the map. I used a map function in JS
+to map the data from a list of user data, and displayed the markers on the map using
+the built in map marker component from the React Native Maps Library. Built into the
+Map Marker component are touch controls, where a user can touch a marker and get
+a popup, which was used later on in the project to display the user and the data
+associated with the user.
 
 Details About Testing_____________________________
+To test this specific module we can essentially boot up the application, as the
+map was configured to load on launch. Once the map is loaded, we can test the
+map by just using the touch controls, and interacting with it as we would with
+any other map application. Since it is essentially Google Maps, it replicates
+the functionality of Google Maps almost exactly. Now, to test the markers we
+just start up the application, and from there the map along with the markers
+should just load as the application reads data from the Firebase database, and
+gives that data to the map marker function to display. Once the application is
+displayed, we can then just tap on the markers, and the map should center itself
+on the marker that was tapped, and it a pop-up window shows up.
 
 Input Equivalence Classes and Relevant Tests______
 (Make list of entries like the following line)
