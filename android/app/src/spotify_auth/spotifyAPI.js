@@ -66,7 +66,7 @@ class SpotifyAPI {
             });
             let userdata = await response.json();
             //return userdata;
-            if (typeof(userdata.images[0]) !== undefined) {
+            if (typeof(userdata.images[0]) !== "undefined") {
                 return new User(userdata.display_name, userdata.external_urls.spotify, userdata.product, userdata.id, userdata.images[0]["url"]);
             } else {
                 return new User(userdata.display_name, userdata.external_urls.spotify, userdata.product, userdata.id, default_avatar);

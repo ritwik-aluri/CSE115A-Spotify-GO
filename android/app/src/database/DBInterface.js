@@ -17,19 +17,48 @@ class DBInterface {
         this.db = database;
     }
 
+    // NEED TO ADD USER AVATAR!
     initUser(userid, _name=PLACEHOLDER_STRING, _spotify_url=PLACEHOLDER_STRING,
-             _premium=false, _sharing=false, _lat=PLACEHOLDER_VALUE,
-             _long=PLACEHOLDER_VALUE, _playback=false,
+             _avatar=PLACEHOLDER_STRING,
+             _premium=false, _sharing=false, _playback=false,
+             _lat=PLACEHOLDER_VALUE, _long=PLACEHOLDER_VALUE,
              songObj=null,
              _music_id=PLACEHOLDER_STRING, _music_url=PLACEHOLDER_STRING,
              _music_name=PLACEHOLDER_STRING, _music_artist=PLACEHOLDER_STRING,
              _music_art=PLACEHOLDER_STRING) {
+        // First check types of inputs
+        if (typeof(userid) !== "string"
+            || typeof(_name) !== "string"
+            || typeof(_spotify_url) !== "string"
+            || typeof(_avatar) !== "string"
+            || typeof(_premium) !== "boolean"
+            || typeof(_sharing) !== "boolean"
+            || typeof(_playback) !== "boolean"
+            || typeof(_lat) !== "number"
+            || typeof(_long) !== "number"
+            || (songObj !== null && typeof(songObj) === "object"
+                && songObj.hasOwnProperty("song_id") && typeof(songObj.song_id) === "string"
+                && songObj.hasOwnProperty("song_url") && typeof(songObj.song_url) === "string"
+                && songObj.hasOwnProperty("name") && typeof(songObj.name) === "string"
+                && songObj.hasOwnProperty("artist") && typeof(songObj.artist) === "string"
+                && songObj.hasOwnProperty("art") && typeof(songObj.art) === "string")
+            || (songObj === null &&
+                (typeof(_music_id) !== "string"
+                 || typeof(_music_url) !== "string"
+                 || typeof(_music_name) !== "string"
+                 || typeof(_music_artist) !== "string"
+                 || typeof(_music_art) !== "string"))) {
+            throw ("Did not initialize user; provided parameters did not match required data types");
+            return
+        }
+        // Next actually add data to the database
         const userRef = ref(this.db, 'users/' + userid);
         if (songObj !== null) {  // A structured song object was NOT passed in
             set(userRef, {
                 // Everything has a default value so the database structure is maintained
                 name: _name,  // User's display name
                 spotify_url: _spotify_url,  // User's Spotify account URL
+                avatar: _avatar,  // User's Spotify account avatar
                 playback: _playback,  // Whether user is currently listening to music
                 premium: _premium,  // Whether user has Spotify Premium
                 // When songObj is NOT null, it should match "music"'s format in the "else" statement
@@ -46,6 +75,7 @@ class DBInterface {
             set(userRef, {
                 name: _name,
                 spotify_url: _spotify_url,
+                avatar: _avatar,
                 playback: _playback,
                 premium: _premium,
                 // When songObj IS null, it should follow this format:
@@ -76,28 +106,60 @@ class DBInterface {
     updateDisplayName(userid, _name=null) {
         const userRef = ref(this.db, 'users/' + userid);
         if (_name !== null) {
-            update(userRef, { "name": _name });
+            if (typeof(_name) === "string") {
+                update(userRef, { "name": _name });
+            }
+            else{
+                console.warn("Did not update user name: invalid data type");
+            }
         }
     }
 
     updateAccountURL(userid, _url=null) {
         const userRef = ref(this.db, 'users/' + userid);
-        if (_name !== null) {
-            update(userRef, { "spotify_url": _url });
+        if (_url !== null) {
+            if (typeof(_url) === "string") {
+                update(userRef, { "spotify_url": _url });
+            }
+            else{
+                console.warn("Did not update user account URL: invalid data type");
+            }
+        }
+    }
+
+    updateAccountAvatar(userid, _avatar=null) {
+        const userRef = ref(this.db, 'users/' + userid);
+        if (_avatar !== null) {
+            if (typeof(_avatar) === "string") {
+                update(userRef, { "avatar": _avatar });
+            }
+            else{
+                console.warn("Did not update user avatar URL: invalid data type");
+            }
         }
     }
 
     updatePlaybackState(userid, _playback=null) {
         const userRef = ref(this.db, 'users/' + userid);
         if (_playback !== null) {
-            update(userRef, { "playback": _playback });
+            if (typeof(_playback) === "boolean") {
+                update(userRef, { "playback": _playback });
+            }
+            else{
+                console.warn("Did not update user playback state: invalid data type");
+            }
         }
     }
 
     updatePremiumStatus(userid, _premium=null) {
         const userRef = ref(this.db, 'users/' + userid);
         if (_premium !== null) {
-            update(userRef, { "premium": _premium });
+            if (typeof(_premium) === "boolean") {
+                update(userRef, { "premium": _premium });
+            }
+            else{
+                console.warn("Did not update user premium status: invalid data type");
+            }
         }
     }
 
@@ -107,23 +169,45 @@ class DBInterface {
         const userRef = ref(this.db, "users/" + userid);
         const userMusicRef = ref(this.db, "users/" + userid + "/music");
         if (songObj !== null) {
-            update(userRef, { "music": songObj });
+            if (typeof(songObj) === "object"
+                && songObj.hasOwnProperty("song_id") && typeof(songObj.song_id) === "string"
+                && songObj.hasOwnProperty("song_url") && typeof(songObj.song_url) === "string"
+                && songObj.hasOwnProperty("name") && typeof(songObj.name) === "string"
+                && songObj.hasOwnProperty("artist") && typeof(songObj.artist) === "string"
+                && songObj.hasOwnProperty("art") && typeof(songObj.art) === "string") {
+                update(userRef, { "music": songObj });
+            }
+            else {
+                console.warn("Did not update user song: invalid data type in song object structure");
+            }
         }
-        else if (songObj === null &&
-                (_id !== null && _url !== null && _name !== null && _artist !== null &&
-                _art !== null)) {
-            update(userMusicRef, { "song_id": _id,
-                                   "song_url": _url,
-                                   "name": _name,
-                                   "artist": _artist,
-                                   "art": _art });
+        else {  // In this case, (songObj === null) {
+            if (typeof(_id) === "string"
+                && typeof(_url) === "string"
+                && typeof(_name) === "string"
+                && typeof(_artist) === "string"
+                && typeof(_art) === "string") {
+                update(userMusicRef, { "song_id": _id,
+                                       "song_url": _url,
+                                       "name": _name,
+                                       "artist": _artist,
+                                       "art": _art });
+            }
+            else {
+                console.warn("Did not update user song: invalid data type among parameters");
+            }
         }
     }
 
     updateLocationShareStatus(userid, _sharing=null) {
         const userRef = ref(this.db, 'users/' + userid);
         if (_sharing !== null) {
-            update(userRef, { "sharing": _sharing });
+            if (typeof(_sharing) === "boolean") {
+                update(userRef, { "sharing": _sharing });
+            }
+            else{
+                console.warn("Did not update user location-sharing status: invalid data type");
+            }
         }
     }
 
@@ -132,10 +216,20 @@ class DBInterface {
     updateLocation(userid, _lat=null, _long=null) {
         const coordinatesRef = ref(this.db, 'users/' + userid + '/coordinates');
         if (_lat !== null) {
-            update(coordinatesRef, { "latitude": _lat });
+            if (typeof(_lat) === "number") {
+                update(coordinatesRef, { "latitude": _lat });
+            }
+            else{
+                console.warn("Did not update user latitude: invalid data type");
+            }
         }
         if (_long !== null) {
-            update(coordinatesRef, { "longitude": _long });
+            if (typeof(_long) === "number") {
+                update(coordinatesRef, { "longitude": _long });
+            }
+            else{
+                console.warn("Did not update user longitude: invalid data type");
+            }
         }
     }
 
@@ -158,6 +252,12 @@ class DBInterface {
         const userRef = ref(this.db, 'users/' + userid);
         let spotify_url = await get(child(userRef, "spotify_url"));
         return spotify_url.val();
+    }
+
+    async getAccountAvatar(userid) {
+        const userRef = ref(this.db, 'users/' + userid);
+        let avatar = await get(child(userRef, "avatar"));
+        return avatar.val();
     }
 
     async getPlaybackState(userid) {
