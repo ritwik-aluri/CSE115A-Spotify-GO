@@ -113,7 +113,6 @@ function updateCurrUserInfo(){
   (Spotify.getCurrUserInfo(token_data["accessToken"])).then((currentUser) => {
     currentUser.spotifyID = encode(currentUser.spotifyID);  // Firebase doesn't like certain available Spotify username chars in its keys
     currUser = currentUser;
-    DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.premium, true, 0, 0, true);
     (Spotify.getCurrSong(token_data["accessToken"])).then((currentSong) => {
         console.log(currentSong);
         if(currentSong != null && currentSong != undefined){
@@ -122,7 +121,7 @@ function updateCurrUserInfo(){
         else{
           currSong = new Song("No Song Playing", "N/A", "https://cdn.discordapp.com/attachments/937180470611955753/949886090205093958/black.png", "", -1);
         }
-        DBInterfaceInstance.updateSong(currentUser.spotifyID, currSong);
+        DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.avatarURL, currentUser.premium, false, true, 0, 0, currSong);
     });
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
