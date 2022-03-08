@@ -86,6 +86,10 @@ test("Initialize sample users in database and ensure that they exist", (done) =>
     initializeAndReturn();
 });
 
+test("test_desc", () => {
+    expect(1).toBe(1);
+});
+
 // Test getters
 // TRY TO GET UNINITIALIZED USER AND SHOW THAT IT FAILS!!!
 // Wait, what happens if I try to get a user that doesn't exist? What's returned? I should print that!
