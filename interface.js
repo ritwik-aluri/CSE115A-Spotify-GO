@@ -276,12 +276,12 @@ function HomeScreen({navigation}) {
       {bottomNagivationButtons(
         handleResync,
         'Resync',
-        () => setHidden(hidden = false),
-        'Nearby',
-        () => handleSongTest(),
-        'Test Button',
         () => navigation.navigate('Settings'),
         'Settings',
+        () => setHidden(hidden = false),
+        'Nearby',
+        () => navigation.navigate('Profile'),
+        'Profile',
         'menu'
       )}
       {profileButton(() => navigation.navigate('Profile'))}
@@ -314,13 +314,13 @@ function ProfileScreen({navigation}){
       {profileText}
       {bottomNagivationBackground}
       {bottomNagivationButtons(
+        () => navigation.navigate('Profile'),
+        'Profile',
+        () => navigation.navigate('Settings'),
+        'Settings',
         () => (navigation.navigate('Home')),
         'Return',
-        () => ('NULL'),
-        'NULL',
-        () => navigation.navigate('Profile'),
-        'Test Button',
-        () => navigation.navigate('Settings'),
+        () => (navigation.navigate('Home')),
         'Settings',
         'other'
       )}
@@ -352,13 +352,13 @@ function SettingsScreen({navigation}){
       {settingsText}
       {bottomNagivationBackground}
       {bottomNagivationButtons(
+        () => navigation.navigate('Profile'),
+        'Profile',
+        () => navigation.navigate('Settings'),
+        'Settings',
         () => (navigation.navigate('Home')),
         'Return',
-        () => ('NULL'),
-        'NULL',
-        () => navigation.navigate('Profile'),
-        'Test Button',
-        () => navigation.navigate('Settings'),
+        () => (navigation.navigate('Home')),
         'Settings',
         'other'
       )}
@@ -383,6 +383,7 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
       justifyContent: 'space-evenly',
       flexDirection: 'row', 
     }}>
+      
       {screenView == 'menu' && (
         <TouchableOpacity
           activeOpacity={0.5}
@@ -403,73 +404,33 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
           </View>
         </TouchableOpacity>
       )}
-
-      {screenView == 'menu' && (
+      
+      {screenView == 'other' && (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={[styles.button]}
+          onPress={left}
+        >
+          <View style={[styles.centering]}>
+            <Icon_EvilIcons
+              name='user'
+              color='white'
+              size={40}
+            />
+          </View>
+          <View style={{marginBottom: '10%'}}>
+            <Text style={[styles.buttonText]}>
+              {leftText}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
+      
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.button]}
           onPress={midLeft}
         >
-        <View style={[styles.centering]}>
-          <Icon_Entypo
-            name='list'
-            color='white'
-            size={34}
-            style={{marginLeft: 'auto',
-                    marginRight: 'auto'}}
-          />
-        </View>
-        <View style={{marginBottom: '10%'}}>
-          <Text style={[styles.buttonText]}>
-            {midLeftText}
-          </Text>
-        </View>
-      </TouchableOpacity>
-      )}
-
-      {screenView == 'other' && (
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.bottomExitButton]}
-          onPress={left}
-        >
-          <View style={[styles.centering, {justifyContent: 'space-evenly', flexDirection: 'row'}]}>
-            <Icon_Entypo
-              name='back'
-              color='white'
-              size={30}
-              style={{marginLeft: 'auto',
-                      marginRight: 'auto'}}
-            />
-            <View style={{width: 10}}/>
-            <View>
-            <Text style={[styles.buttonText, {right: 5, marginTop: 'auto', marginBottom: 'auto'}]}>
-                {leftText}
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-      )}
-      
-      <View style={{width: 90}}/>
-
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={[styles.button]}
-        onPress={midRight}
-      >
-        <View style={[styles.centering]}>
-          <Text style={[styles.buttonText]}>
-            {midRightText}
-          </Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={[styles.button]}
-        onPress={right}
-      >
         <View style={[styles.centering]}>
           <Icon_EvilIcons 
             name='gear'
@@ -479,10 +440,63 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
         </View>
         <View style={{marginBottom: '10%'}}>
           <Text style={[styles.buttonText]}>
-            {rightText}
+            {midLeftText}
           </Text>
         </View>
       </TouchableOpacity>
+      
+
+      
+      
+      <View style={{width: 90}}/>
+
+      {screenView == 'menu' && (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={[styles.bottomExitButton]}
+        onPress={midRight}
+      >
+        <View style={[styles.centering]}>
+          <Icon_Entypo
+            name='list'
+            color='white'
+            size={34}
+            style={{marginLeft: 'auto',
+            marginRight: 'auto'}}></Icon_Entypo>
+            
+          
+        </View>
+        <View style={{marginBottom: '10%'}}>
+          <Text style={[styles.buttonText]}>
+            {midRightText}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      )}
+      {screenView == 'other' && (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={[styles.bottomExitButton]}
+          onPress={midRight}
+        >
+        <View style={[styles.centering]}>
+          <Icon_Entypo
+              name='back'
+              color='white'
+              size={30}
+              style={{marginLeft: 'auto',
+                    marginRight: 'auto'}}
+            />
+        </View>
+        <View style={{marginBottom: '10%'}}>
+            <Text style={[styles.buttonText]}>
+              {midRightText}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
+
+      
     </View>
   </View>
   );
