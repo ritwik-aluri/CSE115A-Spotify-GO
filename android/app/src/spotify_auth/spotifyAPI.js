@@ -1,6 +1,8 @@
 import Song from './song.js'
 import User from './user.js'
 
+const default_avatar = "https://cdn.discordapp.com/attachments/937180470611955753/950599032680628284/unknown.png"
+
 class SpotifyAPI {
     constructor() {}
 
@@ -64,7 +66,12 @@ class SpotifyAPI {
             });
             let userdata = await response.json();
             //return userdata;
-            return new User(userdata.display_name, userdata.external_urls.spotify, userdata.product, userdata.id, userdata.images[0]["url"]);
+            if (userdata.images[0]["url"] != null) {
+                return new User(userdata.display_name, userdata.external_urls.spotify, userdata.product, userdata.id, userdata.images[0]["url"]);
+            } else {
+                return new User(userdata.display_name, userdata.external_urls.spotify, userdata.product, userdata.id, default_avatar);
+            }
+            
             //console.log(userdata.display_name + " " + userdata.external_urls.spotify + " " + userdata.id + " " + userdata.product)
             //console.log("getCurrUserdata: " + JSON.stringify(userdata));
         } catch (error) {
