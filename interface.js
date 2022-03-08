@@ -383,6 +383,52 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
       justifyContent: 'space-evenly',
       flexDirection: 'row', 
     }}>
+      {screenView == 'menu' && (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={[styles.bigButton]}
+        onPress={midRight}
+      >
+        <View style={[styles.centering, {top: 4}]}>
+          <Icon_Entypo
+            name='list'
+            color='white'
+            size={34}
+            style={{marginLeft: 'auto',
+            marginRight: 'auto'}}/>
+        </View>
+        <View style={{marginBottom: '10%'}}>
+          <Text style={[styles.buttonText, {bottom: -6}]}>
+            {midRightText}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      )}
+
+        {screenView == 'other' && (
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={[styles.bigButton]}
+          onPress={midRight}
+        >
+        <View style={[styles.centering, {top: 4}]}>
+          <Icon_Entypo
+              name='back'
+              color='white'
+              size={30}
+              style={{marginLeft: 'auto',
+                    marginRight: 'auto'}}
+            />
+        </View>
+        <View style={{marginBottom: '10%'}}>
+            <Text style={[styles.buttonText, {bottom: -6}]}>
+              {midRightText}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )}
+      
+      <View style={{width: 90}}/>
       
       {screenView == 'menu' && (
         <TouchableOpacity
@@ -404,7 +450,6 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
           </View>
         </TouchableOpacity>
       )}
-      
       {screenView == 'other' && (
         <TouchableOpacity
           activeOpacity={0.5}
@@ -425,7 +470,6 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
           </View>
         </TouchableOpacity>
       )}
-      
         <TouchableOpacity
           activeOpacity={0.5}
           style={[styles.button]}
@@ -444,59 +488,6 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
           </Text>
         </View>
       </TouchableOpacity>
-      
-
-      
-      
-      <View style={{width: 90}}/>
-
-      {screenView == 'menu' && (
-      <TouchableOpacity
-        activeOpacity={0.5}
-        style={[styles.bottomExitButton]}
-        onPress={midRight}
-      >
-        <View style={[styles.centering]}>
-          <Icon_Entypo
-            name='list'
-            color='white'
-            size={34}
-            style={{marginLeft: 'auto',
-            marginRight: 'auto'}}></Icon_Entypo>
-            
-          
-        </View>
-        <View style={{marginBottom: '10%'}}>
-          <Text style={[styles.buttonText]}>
-            {midRightText}
-          </Text>
-        </View>
-      </TouchableOpacity>
-      )}
-      {screenView == 'other' && (
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={[styles.bottomExitButton]}
-          onPress={midRight}
-        >
-        <View style={[styles.centering]}>
-          <Icon_Entypo
-              name='back'
-              color='white'
-              size={30}
-              style={{marginLeft: 'auto',
-                    marginRight: 'auto'}}
-            />
-        </View>
-        <View style={{marginBottom: '10%'}}>
-            <Text style={[styles.buttonText]}>
-              {midRightText}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      )}
-
-      
     </View>
   </View>
   );

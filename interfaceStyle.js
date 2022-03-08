@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
       opacity: 1,
       elevation: 5
     },
-    bottomExitButton: {
+    bigButton: {
       width: 138,
       height: 65,
       borderRadius: 10,
