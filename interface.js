@@ -328,7 +328,7 @@ function ProfileScreen({navigation}){
 };
 
 function SettingsScreen({navigation}){
-  const [enabled, isEnabled] = React.useState(false);
+  const [enabled, isEnabled] = React.useState(toggleSwitch);
 
   const settingsHeader = (<View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
     <Text style={{fontSize: 40, fontWeight: "bold", color: "white"}}>Settings</Text>
@@ -339,7 +339,7 @@ function SettingsScreen({navigation}){
     <Switch
       trackColor={{ false: "#767577", true: "#81b0ff" }}
       thumbColor={enabled ? "#f5dd4b" : "#f4f3f4"}
-      onValueChange={() => {toggleSwitch = !enabled; isEnabled(previousState => !previousState);}}
+      onValueChange={() => {toggleSwitch = !enabled; isEnabled(previousState => !previousState); DBInterfaceInstance.updateLocationShareStatus(currUser.spotifyID, toggleSwitch);}}
       value={enabled}
     />
   </View>)
