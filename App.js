@@ -113,7 +113,7 @@ function updateCurrUserInfo(){
   (Spotify.getCurrUserInfo(token_data["accessToken"])).then((currentUser) => {
     currentUser.spotifyID = encode(currentUser.spotifyID);  // Firebase doesn't like certain available Spotify username chars in its keys
     currUser = currentUser;
-    DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.premium, false, 0, 0, true);
+    DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.premium, true, 0, 0, true);
     (Spotify.getCurrSong(token_data["accessToken"])).then((currentSong) => {
         console.log(currentSong);
         if(currentSong != null && currentSong != undefined){
