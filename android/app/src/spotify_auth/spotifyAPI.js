@@ -27,6 +27,7 @@ class SpotifyAPI {
             
         } catch (error) {
             console.error(error);
+            return null
         }
     }
 
@@ -63,7 +64,7 @@ class SpotifyAPI {
             });
             let userdata = await response.json();
             //return userdata;
-            return new User(userdata.display_name, userdata.external_urls.spotify, userdata.product, userdata.id);
+            return new User(userdata.display_name, userdata.external_urls.spotify, userdata.product, userdata.id, userdata.images[0]["url"]);
             //console.log(userdata.display_name + " " + userdata.external_urls.spotify + " " + userdata.id + " " + userdata.product)
             //console.log("getCurrUserdata: " + JSON.stringify(userdata));
         } catch (error) {
