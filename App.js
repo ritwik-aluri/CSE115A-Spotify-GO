@@ -121,7 +121,7 @@ function updateCurrUserInfo(){
         else{
           currSong = new Song("No Song Playing", "N/A", "https://cdn.discordapp.com/attachments/937180470611955753/949886090205093958/black.png", "", -1);
         }
-        DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.avatarURL, currentUser.premium, false, true, 0, 0, currSong);
+        DBInterfaceInstance.initUser(currentUser.spotifyID, currentUser.displayName, currentUser.profileURL, currentUser.avatarURL, currentUser.premium, true, true, 0, 0, currSong);
     });
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,

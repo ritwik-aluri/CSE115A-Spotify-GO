@@ -66,6 +66,8 @@ function HomeScreen({navigation}) {
       const { code, message } = error;
       console.warn(code, message);
     })
+    username = currUser.displayName;
+    currentSongPlaying = currSong.name;
     profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currentSongPlaying;
   }
 
