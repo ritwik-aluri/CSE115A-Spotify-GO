@@ -1,3 +1,10 @@
+OVERVIEW
+This file contains details provided by each team member about the
+module and functional testing they have done.
+The equivalence classes making up the expected inputs of each module
+are also listed, as well as the unit tests in this file that were
+selected to cover them all and show that desired outputs are always
+returned.
 ______________________________________________________________________
 Fajardo, Gabriel
 Spotify API Authentication Module

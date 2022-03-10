@@ -17,7 +17,6 @@ class DBInterface {
         this.db = database;
     }
 
-    // NEED TO ADD USER AVATAR!
     initUser(userid, _name=PLACEHOLDER_STRING, _spotify_url=PLACEHOLDER_STRING,
              _avatar=PLACEHOLDER_STRING,
              _premium=false, _sharing=false, _playback=false,
@@ -298,9 +297,9 @@ class DBInterface {
                };
     }
 
-    // Get "nearby" users entails getting users within +/- 0.5 latitude/longitude of the current user
+    // Get "nearby" users entails getting users within "radius" latitude/longitude of the current user
     // (Getting radius of miles around user is complicated with only latitude/longitude, but doable;
-    // this can be added later).
+    // this can be added later). Limit to "maxNearbyUsers" users in output, and randomize order.
     // Note: Wanted to query by both latitude and longitude simultaneously to avoid taking in excess
     //       data, but that is IMPOSSIBLE with Realtime Database (but possible with Firestore,
     //       though unsure if database structure would've had to change). Firestore would've also
@@ -310,7 +309,7 @@ class DBInterface {
     //         and https://firebase.google.com/docs/database/rtdb-vs-firestore
     //       If this app is ever something we decide to fully develop, we should shift to Firestore,
     //       despite the overhead effort for the shift!
-    async getNearbyUsers(curUserID) {
+    async getNearbyUsers(curUserID, radius=RADIUS, maxNearbyUsers=MAXNEARBYUSERS) {
         const curUserRef = ref(this.db, 'users/' + curUserID);
         const usersRef = ref(this.db, "users/");
         let latVal = await get(child(curUserRef, "coordinates/latitude"));
@@ -322,8 +321,8 @@ class DBInterface {
         // the user is).
         // Note: get() returns null if nothing fits the query
         let longQueryResult = await get(query(usersRef, orderByChild("coordinates/longitude"),
-                                              startAt(longVal.val() - RADIUS),
-                                              endAt(longVal.val() + RADIUS)));
+                                              startAt(longVal.val() - radius),
+                                              endAt(longVal.val() + radius)));
         // Filter by latitude manually
         let output = [];
         let childKey, childData;
@@ -331,12 +330,12 @@ class DBInterface {
             childKey = childSnapshot.key;
             childData = childSnapshot.val();
             if (childKey !== curUserID &&
-                childData.coordinates.latitude >= latVal.val() - RADIUS &&
-                childData.coordinates.latitude <= latVal.val() + RADIUS && childData.music.spotifyID != -1) {
+                childData.coordinates.latitude >= latVal.val() - radius &&
+                childData.coordinates.latitude <= latVal.val() + radius && childData.music.spotifyID != -1) {
                 output.push(childSnapshot.val());
             }
         });
-        // Shuffle output and return first MAXNEARBYUSERS to put in "nearby users" list.
+        // Shuffle output and return first maxNearbyUsers to put in "nearby users" list.
         // Shuffle algorithm source: Accepted answer at
         // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
         // *** Start cited portion ***
@@ -351,7 +350,7 @@ class DBInterface {
         }
         // *** End cited portion ***
         // Return minimum between all found users and maximum allowed nearby users
-        return output.slice(0, Math.min(output.length, MAXNEARBYUSERS));
+        return output.slice(0, Math.min(output.length, maxNearbyUsers));
     }
 }
 

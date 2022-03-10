@@ -1,0 +1,64 @@
+OVERVIEW
+This file contains details provided by each team member about the
+module and functional testing they have done.
+The equivalence classes making up the expected inputs of each module
+are also listed, as well as the unit tests in this file that were
+selected to cover them all and show that desired outputs are always
+returned.
+______________________________________________________________________
+Aluri, Ritwik
+Database Interface Module
+
+Details About Module______________________________
+This module provides an interface to Google's Firebase: Realtime
+Database. This is meant for use whenever any interfacing with the
+database is required/desired, as it prevents the using programmer from
+having to know about the Firebase API.
+It provides:
+    User initialization (with typechecks for fields' values) and
+        deletion functions
+    Setters for all fields (with typechecks) given user ID
+    Getters for all fields given user ID
+    Function to get nearby (within some latitude/longitude range of
+        the current user) users
+
+Details About Testing_____________________________
+Each function type (initialization, deletion, setters, getters, and
+the ever-important function to get nearby users) was tested manually
+as it was implemented.
+First, the user initialization was tested simply to check whether the
+database was being updated with new user data. That's all it's
+supposed to do anyway (and then typechecks were added and checked
+towards the end of the release, because I could trust the Spotify
+API class to return data correctly, but then I decided I would be
+better safe than sorry). The typechecks weren't really tested, but a
+simple test was done with an intentionally-bad field just to ensure
+it works to some extent.
+Then, the setters were created, placed at various points throughout
+the code after a user was initialized, and the database was observed
+manually to ensure that the updates were occurring. Typechecks were
+also added near the end of the project and each tested with a single
+incorrect value type each (just to see if they work).
+The getters were created last (because we cared more about getting all
+of the nearby users in full than each field) and tested to ensure that
+the returned type is correct, but that's all.
+The function to get nearby users was tested before the getters (but
+after the user initialization and setters), also within the app and
+via manual observation. I eliminated bugs that caused the app to stop
+working, then bugs that prevented the access of returned data, and
+then finally I checked the output in the "Nearby user/song list"
+manually.
+The user removal function was tested in the automated tests produced
+at the end of the project (because that's when I learned how to create
+automated unit tests).
+The automated unit tests at the end of the project (within
+"DBConfigInterface.test.js") were simply used more as a proof of
+concept that unit testing with this module is possible and to keep
+some tests that could be used in the future as changes to the module
+are made. They do very basic typechecks (since there are so many
+possible inputs, only one basic success and failure case is checked
+per test).
+
+Input Equivalence Classes and Relevant Tests______
+(Make list of entries like the following line)
+Equivalence class: *range of inputs*; Test: *testfilename (I'll use node to do tests)*
