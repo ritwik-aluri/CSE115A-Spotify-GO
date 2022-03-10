@@ -6,7 +6,7 @@ import {
 } from "firebase/database";
 
 // These could be passed as parameters to getNearbyUsers()
-RADIUS = 100;
+RADIUS = 1;
 MAXNEARBYUSERS = 100;
 // Firebase doesn't store values of null, so these are used for placeholder values instead
 PLACEHOLDER_STRING = "-1";
