@@ -499,7 +499,9 @@ const profileButton = (press) => (
     style={[styles.profileButton]}
     onPress={press}
   >
-    <View style={[styles.profileButtonInner]}/>
+    <View style={[styles.profileButtonInner]}>
+      <Image style={[styles.profileAvatar]} source={{ uri: currUser.avatarURL }} />
+    </View>
   </TouchableOpacity>
 );
 

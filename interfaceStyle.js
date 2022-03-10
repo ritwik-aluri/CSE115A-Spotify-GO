@@ -62,6 +62,12 @@ const styles = StyleSheet.create({
       height: 75,
       borderRadius: 50,
     },
+    profileAvatar: {
+      alignSelf: 'center',
+      width: 75,
+      height: 75,
+      borderRadius: 50,
+    },
     buttonText: {
       position: 'relative',
       alignSelf: 'center',
