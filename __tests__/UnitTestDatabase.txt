@@ -60,5 +60,22 @@ possible inputs, only one basic success and failure case is checked
 per test).
 
 Input Equivalence Classes and Relevant Tests______
-(Make list of entries like the following line)
-Equivalence class: *range of inputs*; Test: *testfilename (I'll use node to do tests)*
+See tests in "DBConfigInterface.test.js" for all related tests.
+Any database user entry must be initialized such that their:
+    Display name is a string
+    Spotify account URL is a string
+    Spotify account avatar URL is a string
+    Premium status on Spotify is a boolean
+    Consent as to whether or not they're sharing their location is a boolean
+    Status of whether or not they're currently listening to a song is a boolean
+    Latitude and Longitude are numbers
+    Music's information (the song's Spotify ID, URL, name, the artist that made it, and the URL
+        to the album art) is all given as strings
+Any function calls using the DBInterface class that don't adhere to those criteria will result
+in either:
+    Failure to initialize the user
+    Failure to update the user's data in the database (if the user was already initialized)
+Therefore the equivalence classes of possible inputs to any DBInterface instance are represented by
+the primitive type of each of the many individual variables passed into various functions in the
+class. If the type of the passed parameters corresponding to each variable does not match the given
+specifications, no change will occur in the database.

@@ -138,25 +138,56 @@ test("Try getter functions apart from getUser()", (done) => {
 test("Try setters", (done) => {
     function trySetters() {
         try {
+            // For each update function, try a failing and successful update value
+            // Display Name
+            testInterface.updateDisplayName(userid_A, -1);
+            testInterface.getDisplayName(userid_A).then((out) => {
+                expect(out).toBe("TestA2Name");  // Fail update
+            });
             testInterface.updateDisplayName(userid_A, "TestA2NewName");
             testInterface.getDisplayName(userid_A).then((out) => {
-                expect(out).toBe("TestA2NewName");
+                expect(out).toBe("TestA2NewName");  // Succeed update
+            });
+            // Account URL
+            testInterface.updateAccountURL(userid_A, -1);
+            testInterface.getAccountURL(userid_A).then((out) => {
+                expect(out).toBe("TestA3SpotifyURL");
             });
             testInterface.updateAccountURL(userid_A, "TestA3NewSpotifyURL");
             testInterface.getAccountURL(userid_A).then((out) => {
                 expect(out).toBe("TestA3NewSpotifyURL");
             });
+            // Account Avatar
+            testInterface.updateAccountAvatar(userid_A, -1);
+            testInterface.getAccountAvatar(userid_A).then((out) => {
+                expect(out).toBe("TestA4AvatarURL");
+            });
             testInterface.updateAccountAvatar(userid_A, "TestA4NewAvatarURL");
             testInterface.getAccountAvatar(userid_A).then((out) => {
                 expect(out).toBe("TestA4NewAvatarURL");
+            });
+            // Playback State
+            testInterface.updatePlaybackState(userid_A, "-1");
+            testInterface.getPlaybackState(userid_A).then((out) => {
+                expect(out).toBe(false);
             });
             testInterface.updatePlaybackState(userid_A, true);
             testInterface.getPlaybackState(userid_A).then((out) => {
                 expect(out).toBe(true);
             });
+            // Premium Status
+            testInterface.updatePremiumStatus(userid_A, "-1");
+            testInterface.getPremiumStatus(userid_A).then((out) => {
+                expect(out).toBe(false);
+            });
             testInterface.updatePremiumStatus(userid_A, true);
             testInterface.getPremiumStatus(userid_A).then((out) => {
                 expect(out).toBe(true);
+            });
+            // Song
+            testInterface.updateSong(userid_A, -1);
+            testInterface.getSong(userid_A).then((out) => {
+                expect(typeof(out)).toBe("object");
             });
             let newSongObj = {
                 music_id: "TestA11NewMusicID",
@@ -185,9 +216,21 @@ test("Try setters", (done) => {
                 expect(out.music_artist).toBe("TestB14NewMusicArtist");
                 expect(out.music_art).toBe("TestB15NewMusicAlbumArt");
             });
+            // Location Share Status
+            testInterface.updateLocationShareStatus(userid_A, "-1");
+            testInterface.getLocationShareStatus(userid_A).then((out) => {
+                expect(out).toBe(false);
+            });
             testInterface.updateLocationShareStatus(userid_A, true);
             testInterface.getLocationShareStatus(userid_A).then((out) => {
                 expect(out).toBe(true);
+            });
+            // Location
+            testInterface.updateLocation(userid_A, "-1", "-1");
+            testInterface.getLocation(userid_A).then((out) => {
+                expect(typeof(out)).toBe("object");
+                expect(typeof(out.latitude)).toBe("number");
+                expect(typeof(out.longitude)).toBe("number");
             });
             testInterface.updateLocation(userid_A, -1000, -1000);
             testInterface.getLocation(userid_A).then((out) => {
