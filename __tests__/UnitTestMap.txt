@@ -37,8 +37,10 @@ displayed, we can then just tap on the markers, and the map should center itself
 on the marker that was tapped, and it a pop-up window shows up.
 
 Input Equivalence Classes and Relevant Tests______
-(Make list of entries like the following line)
-Equivalence class: *range of inputs*; Test: *testfilename (I'll use node to do tests)*
+Input: Touch screen
+  The user can use the touch screen to interact with the map, similar to how
+  they would use any other map application. The Map will respond in a similar
+  fashion to any other Map application.
 
 ______________________________________________________________________
 Olano, Jevin
