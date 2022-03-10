@@ -80,13 +80,13 @@ function HomeScreen({navigation}) {
     <View style={[styles.listItem]}>
       <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
         <View style={{width: '90%', flexDirection: 'row'}}>
-        <View style={[styles.templateEntry]}>
-          <Image style={{width: 60, height: 60}} 
-            source={{
-              uri: item.music.artUrl,
-            }}>
-          </Image>
-        </View>
+          <View style={[styles.templateEntry]}>
+            <Image style={{width: 60, height: 60}} 
+              source={{
+                uri: item.music.artUrl,
+              }}>
+            </Image>
+          </View>
           <View style={{flexDirection: 'column', justifyContent: 'center', left: 12}}>
             <Text style={{color: 'white'}}>{item.music.name}</Text>
             <Text style={{color: 'grey'}}>{item.music.artist}</Text>
@@ -95,9 +95,17 @@ function HomeScreen({navigation}) {
             </Text>
           </View>
         </View>
+        <TouchableOpacity activeOpacity={0.5}
+                          onPress={() => Linking.openURL(item.spotify_url)}
+                          style={[styles.profileAvatarList]}
+        >
+          <Image style={[styles.profileAvatarList, {right: 45}]} source={{ uri: item.avatar }}>
+              
+          </Image>
+        </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.5}
-          style={{justifyContent: 'center', width: '10%'}}
+          style={{justifyContent: 'center', width: '10%', right: 30}}
           onPress={() => handleLink(item.music.url)}
         >
           <Icon_AntDesign
@@ -153,25 +161,25 @@ function HomeScreen({navigation}) {
                 <View>
                   <View style={[styles.calloutMenu]}>
                     <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
-                    <View style={[styles.templateEntry]}>
-                        <WebView style={{ height: 60 , width: 60 }} source={{ uri: marker.music.artUrl }} />
-                     </View>
-                     <View style={{flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    left: 12}}
-                      >
-                        <Text style={{color: 'white'}}>
-                          {marker.music.name}
-                        </Text>
-                        <Text style={{color: 'grey'}}>
-                          {marker.music.artist}
-                        </Text>
-                        <Text style={{color: 'grey'}}>
-                          User: {marker.name}
-                        </Text>
+                      <View style={[styles.templateEntry]}>
+                          <WebView style={{ height: 60 , width: 60 }} source={{ uri: marker.music.artUrl }} />
+                       </View>
+                       <View style={{flexDirection: 'column',
+                                      justifyContent: 'center',
+                                      left: 12}}
+                        >
+                          <Text style={{color: 'white'}}>
+                            {marker.music.name}
+                          </Text>
+                          <Text style={{color: 'grey'}}>
+                            {marker.music.artist}
+                          </Text>
+                          <Text style={{color: 'grey'}}>
+                            User: {marker.name}
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  </View>
                   <View style={[styles.calloutPointer]}/>
                 </View>
               </Callout>
