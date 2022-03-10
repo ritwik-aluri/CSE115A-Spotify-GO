@@ -51,3 +51,32 @@ Input Equivalence Classes and Relevant Tests______
 Equivalence class: *range of inputs*; Test: *testfilename (I'll use node to do tests)*
 
 ______________________________________________________________________
+Nguyen, Aaron
+User Interface Component
+
+Details About Module______________________________
+My main focus on this project was user interface, mainly on the Profile and Settings Page. The
+main component used for these pages were native React Native components, primarily focused on
+'@react-navigation/native-stack' in order to combine the pages together into one app. I also
+worked on ensuring that Resync had functioned for every aspect that need to be resynced when
+it changed. The result is that I created more pages for the App that can update with current
+information, as well as push information to the database. On top of that, I worked with the
+database and Spotify team to ensure that data was able to be loaded up on startup, and updated
+whenever the user resynced the app. 
+
+Details About Testing_____________________________
+After launching the app, you should be able to click the grey center button to access the profile
+page. Since the app has already initialized the user on login, the profile page should have your
+information. Then, there is a return button that should return you to the home page in the same
+state as it was before you entered the profile page. You can then press the settings button to
+access the settings page. There, you can toggle the settings to disable/enable your location sharing
+with the map. You can test this by having another user looking to see if they can see you on the map
+after you toggle the setting. Back on the home page, if you press resync, you should be able to see
+changes to the map, and to the user list. I tested this by having other people change the song they're
+listening to, or changing their settings, and then resyncing to see if the changes have taken any 
+effect.
+
+Input Equivalence Classes and Relevant Tests______
+Input: location sharing settings toggle
+    The user can change the setting for location sharing, which would
+    push to the database and change if you can be seen on the map.
