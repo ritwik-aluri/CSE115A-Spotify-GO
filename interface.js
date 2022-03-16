@@ -1,56 +1,66 @@
 import React from 'react';
-
 import MapView, { Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    Text,
-    TextInput,
-    View,
-    TouchableOpacity,
-    FlatList,
-    Dimensions,
-    Switch,
-    Image,
-    Linking
-  } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { styles } from './interfaceStyle.js';
-import { darkMap } from './mapStyle.js';
+import GetLocation from 'react-native-get-location';
+import { SafeAreaView,
+         ScrollView,
+         StatusBar,
+         Text,
+         TextInput,
+         View,
+         TouchableOpacity,
+         FlatList,
+         Dimensions,
+         Switch,
+         Image,
+         Linking } from 'react-native';
 import Icon_Entypo from 'react-native-vector-icons/Entypo';
 import Icon_EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Icon_AntDesign from 'react-native-vector-icons/AntDesign';
+import { WebView } from 'react-native-webview';
+import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
 import Spotify from "./android/app/src/spotify_auth/spotifyAPI";
 import authHandler from "./android/app/src/spotify_auth/authenticationHandler";
-import {currUser, currSong, token_data, getNearby, updateCurrUserInfo, DBInterfaceInstance} from "./App.js";
-import GetLocation from 'react-native-get-location';
-import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
 
+import { styles } from './interfaceStyle.js';
+import { darkMap } from './mapStyle.js';
+import { DBInterface } from './android/app/src/database/DBInterface.js';
+import { userList,
+  currUser,
+  currSong,
+  token_data,
+  getNearby,
+  updateCurrUserInfo,
+  DBInterfaceInstance } from './App.js';
+
+export { HomeScreen,
+         ProfileScreen,
+         SettingsScreen,
+         toggleSwitch };
+
+// Template user information
 let profileInfo = "Username: \n\nCurrent Song Playing:";
 let username = "";
 let currentSongPlaying = "";
 let toggleSwitch = true;
 
-export { HomeScreen, ProfileScreen, SettingsScreen };
-export {toggleSwitch};
-import { userList } from './App.js';
-import DBInterface from './android/app/src/database/DBInterface.js';
-
+// Home Screen View
 function HomeScreen({navigation}) {
-  let [text, onChangeText] = React.useState("Search ...");
+  // let [text, onChangeText] = React.useState("Search ...");
   let [hidden, setHidden] = React.useState(true);
   let [currLatitude, setLatitude] = React.useState(0);
   let [currLongitude, setLongitude] = React.useState(0);
   let [login, setLogin] = React.useState(true);
+  const dimensions = useWindowDimensions();
 
+  // Handler for opening URLs
   const handleLink = (event) => {
     if (typeof(event) == 'string') {
       Linking.openURL(event);
     }
   }
 
+  // Handler for resynchronizing information from database
   const handleResync = () => {
     setLogin(login = false);
     GetLocation.getCurrentPosition({
@@ -71,11 +81,13 @@ function HomeScreen({navigation}) {
     profileInfo = "Username: " + username + "\n\nCurrent Song Playing: " + currentSongPlaying;
   }
 
+  // Test handler, for testing purposes
   const handleSongTest = () => {
     console.log(token_data);
     // Spotify.saveSong("4cOdK2wGLETKBW3PvgPWqT", token_data["accessToken"])
   }
 
+  // Entry populator and view for renderItem
   const Item = ({ item }) => (
     <View style={[styles.listItem]}>
       <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -118,13 +130,15 @@ function HomeScreen({navigation}) {
     </View>
   );
 
+  // Entry renderer for FlatList
   const renderItem = ({item}) => {
     return (
       <Item item={item}/>
     );
   };
 
-  const mapView = ( // Map Display
+  // Map Display component
+  const mapView = (
     <MapView
       provider={PROVIDER_GOOGLE} // Remove this if we're not using Google Maps
       style={styles.map}
@@ -137,7 +151,7 @@ function HomeScreen({navigation}) {
       }}
       showsUserLocation={true}
       showsMyLocationButton={true}>
-        
+      
       {userList[0] != null && userList.map((marker, index) => {
         if (marker.coordinates.latitude != null && marker.coordinates.longitude != null && marker.sharing === true) {
           return (
@@ -190,6 +204,7 @@ function HomeScreen({navigation}) {
     </MapView>
   );
 
+  // Nearby Users List component
   const musicMenu = (
   <View style={[styles.musicMenu, {position: 'absolute'}]}>
     <TouchableOpacity
@@ -217,6 +232,7 @@ function HomeScreen({navigation}) {
   </View>
   );
 
+  // Collapsed Current User Menu component
   const collapsedMenu = (
     <View style={[styles.collapsedMenu]}>
       <View style={{flexDirection: 'row', marginTop: 'auto', marginBottom: 'auto'}}>
@@ -245,7 +261,7 @@ function HomeScreen({navigation}) {
     </View>
   );
 
-  const dimensions = useWindowDimensions();
+  // Login Screen View
   const loginScreen = (
     <>
     <View style={{width: dimensions.width,
@@ -300,8 +316,10 @@ function HomeScreen({navigation}) {
     </>
   );
 };
-  
+
+// Profile Screen View
 function ProfileScreen({navigation}){
+  // Header for profile
   const profileHeader = (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
       <Text style={{fontSize: 40, fontWeight: "bold", color: "white"}}>
@@ -310,11 +328,12 @@ function ProfileScreen({navigation}){
     </View>
   );
 
+  // Profile information
   const profileText = (
     <View style={{ flex: 5, justifyContent: 'flex-start' }}>
       <Text style={{fontSize: 20, color: "white"}}>{profileInfo}</Text>  
     </View>
-    );
+  );
 
   return (
     <View style={styles.container}>
@@ -337,22 +356,38 @@ function ProfileScreen({navigation}){
   );
 };
 
+// Settings Screen View
 function SettingsScreen({navigation}){
   const [enabled, isEnabled] = React.useState(toggleSwitch);
+  
+  // Header for Settings
+  const settingsHeader = (
+    <View style={{ flex: 1,
+                   alignItems: 'center',
+                   justifyContent: 'flex-start' }}
+    >
+      <Text style={{ fontSize: 40, fontWeight: "bold", color: "white" }}>
+        Settings
+      </Text>
+    </View>
+  );
 
-  const settingsHeader = (<View style={{flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
-    <Text style={{fontSize: 40, fontWeight: "bold", color: "white"}}>Settings</Text>
-  </View>)
-
-  const settingsText = (<View style={{ flex: 5, justifyContent: 'flex-start' }}>
-    <Text style={{fontSize: 20, color: "white"}}>Remove consent to sharing map data </Text>
-    <Switch
-      trackColor={{ false: "#767577", true: "#81b0ff" }}
-      thumbColor={enabled ? "#f5dd4b" : "#f4f3f4"}
-      onValueChange={() => {toggleSwitch = !enabled; isEnabled(previousState => !previousState); DBInterfaceInstance.updateLocationShareStatus(currUser.spotifyID, toggleSwitch);}}
-      value={enabled}
-    />
-  </View>)
+  // Settings information
+  const settingsText = (
+    <View style={{ flex: 5,
+                   justifyContent: 'flex-start' }}
+    >
+      <Text style={{ fontSize: 20, color: "white" }}>
+        Remove consent to sharing map data
+      </Text>
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={enabled ? "#f5dd4b" : "#f4f3f4"}
+        onValueChange={() => {toggleSwitch = !enabled; isEnabled(previousState => !previousState); DBInterfaceInstance.updateLocationShareStatus(currUser.spotifyID, toggleSwitch);}}
+        value={enabled}
+      />
+    </View>
+  );
   
   return (
     <View style={styles.container}>
@@ -501,6 +536,7 @@ const bottomNagivationButtons = (left, leftText, midLeft, midLeftText, midRight,
   );
 };
 
+// Profile Button
 const profileButton = (press) => (
   <TouchableOpacity
     activeOpacity={0.5}
@@ -513,6 +549,7 @@ const profileButton = (press) => (
   </TouchableOpacity>
 );
 
+// Background for bottom bar navigation
 const bottomNagivationBackground = ( // Background
 <View style={{
   position: 'absolute',
